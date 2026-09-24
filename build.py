@@ -318,7 +318,7 @@ def contacts():
       <a class="ccard" href="mailto:sales@yume.cloud"><i><svg><use href="#i-inbox"/></svg></i><div><small>Продажи и партнёрство</small><b>sales@yume.cloud</b><span>Коммерческие предложения, интеграции, договоры</span></div><svg class="ccard__arr"><use href="#i-arrow"/></svg></a>
       <a class="ccard" href="mailto:product@yume.cloud"><i><svg><use href="#i-doc"/></svg></i><div><small>Поддержка клиентов</small><b>product@yume.cloud</b><span>Вопросы по работе системы, идеи и пожелания</span></div><svg class="ccard__arr"><use href="#i-arrow"/></svg></a>
       <div class="ccard ccard--static"><i><svg><use href="#i-store"/></svg></i><div><small>Офис</small><b>Алматы, Казахстан</b><span>Встречи по договорённости. Приезжаем к клиентам в Алматы и Астане, остальным показываем по видеосвязи.</span></div></div>
-      <div class="ccard ccard--static"><i><svg><use href="#i-box"/></svg></i><div><small>Мы в сети</small><b><a href="https://www.instagram.com/yumecloudx/" rel="noopener">Instagram</a> · <a href="https://www.linkedin.com/company/yume-cloud/" rel="noopener">LinkedIn</a> · <a href="/feed/">Лента прокатчиков</a></b><span>Новости продукта, кейсы клиентов и советы по прокату</span></div></div>
+      <div class="ccard ccard--static"><i><svg><use href="#i-box"/></svg></i><div><small>Мы в сети</small><b><a href="https://www.instagram.com/yumecloudx/" rel="noopener">Instagram</a> · <a href="https://www.linkedin.com/company/yume-cloud/" rel="noopener">LinkedIn</a></b><span>Новости продукта, кейсы клиентов и советы по прокату</span></div></div>
     </div>
     <div class="contacts__form" data-reveal="right">
       <h2 style="font-size:26px;margin-bottom:8px">Оставьте заявку</h2>
@@ -463,38 +463,6 @@ def download_page():
                  ['Перезвоним в течение 15 минут в рабочее время', 'Настроим роли и права для команды', 'Пришлём установочные файлы для компьютера'])
     write('/download/index.html', page('Скачать приложение Yume для iOS, Android, macOS и Windows', 'Управляйте прокатом с телефона и компьютера. Приложение Yume для iOS и Android, веб-версия и десктоп для macOS и Windows.', '/download/', body))
 
-def feed_page():
-    body = '''
-<section class="hero" style="padding-bottom:88px">
-  <div class="hero__bg"></div><div class="hero__glow"></div>
-  <div class="wrap">
-    <div class="hero__inner">
-      <div class="hero__pill"><b>ЛЕНТА</b> Новая возможность Yume</div>
-      <h1>Первая площадка <span class="hl">для прокатчиков</span> Казахстана</h1>
-      <p class="lead">Общайтесь с коллегами, делитесь опытом, задавайте вопросы. Инвентарь и транспорт, оба направления в одном месте. Вход по номеру телефона, аккаунт Yume не нужен.</p>
-      <div class="hero__ctas">
-        <a class="btn btn--lg" href="https://feed.yume.cloud/" rel="noopener">Открыть ленту <svg><use href="#i-arrow"/></svg></a>
-      </div>
-      <div class="hero__trust"><span><svg><use href="#i-check"/></svg> Бесплатно</span><span><svg><use href="#i-check"/></svg> Без регистрации в Yume</span><span><svg><use href="#i-check"/></svg> Только прокатчики</span></div>
-    </div>
-  </div>
-</section>
-<section class="section section--soft">
-  <div class="wrap">
-    <div class="sec-head"><div data-reveal><p class="eyebrow">О площадке</p><h2>Здесь говорят о том, что реально происходит в бизнесе</h2></div></div>
-    <div class="feature-grid">
-      <div class="feature-c" data-reveal><svg><use href="#i-inbox"/></svg><h3>Опыт и советы</h3><p>Как масштабировались, как выстраивали цены, как нашли хороших сотрудников. Реальные истории от людей из индустрии.</p></div>
-      <div class="feature-c" data-reveal><svg><use href="#i-doc"/></svg><h3>Новости и тренды</h3><p>Что меняется на рынке аренды, какие решения принимают коллеги, как развивается индустрия в разных городах.</p></div>
-      <div class="feature-c" data-reveal><svg><use href="#i-alert"/></svg><h3>Место для своих</h3><p>Угоны, мошенники, провалы. То, о чём не пишут публично, но о чём важно знать.</p></div>
-      <div class="feature-c" data-reveal><svg><use href="#i-phone"/></svg><h3>Вход по номеру</h3><p>Не нужно быть клиентом Yume. Достаточно номера телефона, чтобы зайти и читать обсуждения.</p></div>
-      <div class="feature-c" data-reveal><svg><use href="#i-box"/></svg><h3>Прокат инвентаря</h3><p>Инструмент, оборудование, техника, всё, что сдают в аренду и нужно контролировать.</p></div>
-      <div class="feature-c" data-reveal><svg><use href="#i-car"/></svg><h3>Прокат транспорта</h3><p>Авто, таксопарки, корпоративный прокат и другие транспортные направления.</p></div>
-    </div>
-    <div style="text-align:center;margin-top:40px" data-reveal><a class="btn btn--lg" href="https://feed.yume.cloud/" rel="noopener">Посмотреть, о чём говорят прокатчики <svg><use href="#i-arrow"/></svg></a></div>
-  </div>
-</section>
-'''
-    write('/feed/index.html', page('Лента прокатчиков — Yume', 'Открытая площадка для прокатных компаний Казахстана: опыт, новости, вопросы коллег. Вход по номеру телефона.', '/feed/', body, light_nav=False))
 
 def doc_page(path, title, desc, inner, updated='22 сентября 2026'):
     body = f'''
@@ -554,8 +522,15 @@ def page(title, desc, path, body, light_nav=True):
     return _page(title, desc, path, body, light_nav).replace('</head>', ANALYTICS + '\n</head>', 1) if ANALYTICS else _page(title, desc, path, body, light_nav)
 
 
+def redirect_pages():
+    old = {'/tools/': '/solutions/tools/', '/blacklist/': '/check/', '/mobiledownload/': '/download/', '/desktopdownload/': '/download/',
+           '/privacy/': '/legal/privacy/', '/taxi/': '/solutions/', '/taxishort/': '/solutions/', '/transport/': '/solutions/', '/feed/': '/'}
+    for src, dst in old.items():
+        write(src + 'index.html', f'<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Перенаправление</title><meta http-equiv="refresh" content="0; url={dst}"><link rel="canonical" href="https://www.yume.cloud{dst}"><meta name="robots" content="noindex"><script>location.replace("{dst}")</script></head><body><a href="{dst}">Перейти</a></body></html>')
+    write('/.nojekyll', '')
+
 def service_files():
-    pages = ['/', '/solutions/', '/check/', '/contacts/', '/download/', '/feed/', '/legal/', '/legal/privacy/', '/delete-account/'] + [f'/solutions/{s["slug"]}/' for s in SEGMENTS]
+    pages = ['/', '/solutions/', '/check/', '/contacts/', '/download/', '/legal/', '/legal/privacy/', '/delete-account/'] + [f'/solutions/{s["slug"]}/' for s in SEGMENTS]
     today = __import__('datetime').date.today().isoformat()
     urls = ''.join(f'  <url><loc>https://www.yume.cloud{p}</loc><lastmod>{today}</lastmod><changefreq>{"weekly" if p in ("/", "/solutions/") else "monthly"}</changefreq><priority>{"1.0" if p == "/" else "0.8" if p.startswith("/solutions") or p == "/check/" else "0.5"}</priority></url>\n' for p in pages)
     write('/sitemap.xml', f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
@@ -581,6 +556,6 @@ solutions_index()
 contacts()
 check_page()
 download_page()
-feed_page()
 legal_pages()
 service_files()
+redirect_pages()

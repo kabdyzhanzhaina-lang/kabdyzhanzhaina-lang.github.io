@@ -1,16 +1,14 @@
 # yume.cloud — лендинг
 
-Статический сайт Yume для прокатов инвентаря и оборудования. Без сборщиков и фреймворков: HTML, CSS, JavaScript и две серверные функции Vercel.
+Статический сайт Yume для прокатов инвентаря и оборудования: HTML, CSS, JavaScript. Хостинг: GitHub Pages из ветки `main`.
 
 ## Структура
 
 - `index.html` — главная. Шапка и футер отсюда переиспользуются на внутренних страницах.
-- `build.py` — генерирует внутренние страницы: `solutions/*`, `contacts/`, `check/`, `download/`, `feed/`, `legal/*`, `delete-account/`. Тексты страниц лежат внутри скрипта.
-- `css/styles.css`, `js/main.js` — стили и анимации. `js/check.js` — живая проверка клиента.
-- `api/lead.js` — приём заявок с форм и отправка в Telegram.
-- `api/egov.js` — прокси к реестру должников eGov, добавляет токен на сервере.
-- `assets/` — логотипы клиентов, скриншоты продукта, иконки.
-- `vercel.json` — редиректы со старых адресов, кэш, чистые URL.
+- `build.py` — генерирует внутренние страницы (`solutions/*`, `contacts/`, `check/`, `download/`, `legal/*`, `delete-account/`), `sitemap.xml`, `robots.txt`, `404.html` и страницы-редиректы со старых адресов. Тексты лежат внутри скрипта.
+- `css/styles.css`, `js/main.js` — стили и анимации. `js/check.js` — проверка клиента по API Yume.
+- `assets/` — логотипы клиентов, скриншоты продукта, шрифты.
+- `api/` — серверные функции для приёма заявок в Telegram и прокси eGov. На GitHub Pages не выполняются, нужен любой serverless-хостинг (Cloudflare Workers, Vercel). Без них форма открывает WhatsApp с текстом заявки.
 
 ## Локально
 
@@ -19,23 +17,10 @@ python3 build.py
 python3 -m http.server 4174
 ```
 
-Открыть http://localhost:4174
+## Публикация
 
-## Деплой
+Любой пуш в `main` публикуется на GitHub Pages автоматически. После правки текстов внутренних страниц запускайте `python3 build.py` и коммитьте сгенерированные файлы.
 
-Проект на Vercel: `yume-cloud-zzydfr`. Пуш в `main` деплоит автоматически, вручную:
+## Домен
 
-```bash
-python3 build.py && vercel deploy --prod --yes
-```
-
-## Переменные окружения (Vercel → Settings → Environment Variables)
-
-| Имя | Зачем |
-|---|---|
-| `TELEGRAM_BOT_TOKEN` | токен бота, куда падают заявки |
-| `TELEGRAM_CHAT_ID` | чат или группа для заявок |
-| `YUME_API_TOKEN` | токен для реестра eGov на странице проверки (без него блок показывает заглушку) |
-| `YUME_API_BASE` | необязательно, по умолчанию `https://api.yume.cloud` |
-
-После правки текстов внутренних страниц запускайте `python3 build.py` и коммитьте сгенерированные файлы.
+В настройках репозитория Pages → Custom domain указать `www.yume.cloud`, у регистратора создать CNAME `www` → `kabdyzhanzhaina-lang.github.io` и A-записи для корня на IP GitHub Pages (185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153).

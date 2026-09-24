@@ -189,9 +189,11 @@
       try { window.gtag && gtag('event', 'generate_lead', { segment: payload.segment }); window.fbq && fbq('track', 'Lead'); } catch (x) {}
     } catch (err) {
       btn.disabled = false; btn.textContent = label;
+      const msg = `Здравствуйте! Хочу демо Yume.\nИмя: ${payload.name}\nТелефон: ${payload.phone}\nСфера: ${payload.segment}`;
+      window.open('https://wa.me/77779479990?text=' + encodeURIComponent(msg), '_blank', 'noopener');
       let m = $('.form__err', form);
       if (!m) { m = document.createElement('p'); m.className = 'form__err'; btn.after(m); }
-      m.textContent = err.message === 'not_configured' ? 'Приём заявок ещё настраивается. Напишите нам в WhatsApp: +7 777 947 99 90' : 'Не удалось отправить. Попробуйте ещё раз или напишите в WhatsApp: +7 777 947 99 90';
+      m.textContent = 'Открыли WhatsApp с текстом заявки. Если окно не открылось, напишите на +7 777 947 99 90';
     }
   });
   $$('.form input').forEach(i => i.addEventListener('input', () => i.classList.remove('is-invalid')));

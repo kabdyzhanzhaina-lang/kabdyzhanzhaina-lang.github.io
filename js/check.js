@@ -48,7 +48,8 @@
     egovCtl?.abort(); egovCtl = new AbortController();
     loading(egovBox);
     try {
-      const r = await fetch(API_EGOV + encodeURIComponent(q), { signal: egovCtl.signal });
+      let r = await fetch(API_EGOV + encodeURIComponent(q), { signal: egovCtl.signal }).catch(() => null);
+      if (!r || r.status === 404 || r.status === 405) r = await fetch('https://api.yume.cloud/v1/crm/integrations/egov/' + encodeURIComponent(q) + '/', { headers: HEADERS, signal: egovCtl.signal });
       if (!r.ok) throw new Error('HTTP ' + r.status);
       const j = await r.json();
       egovAll = (Array.isArray(j) ? j : (j?.results || [])).slice().sort((a, b) => new Date(b.ipStartDate || 0) - new Date(a.ipStartDate || 0));
