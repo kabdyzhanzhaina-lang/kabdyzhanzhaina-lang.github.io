@@ -67,7 +67,27 @@ def page(title, desc, path, body, light_nav=True):
 </html>
 '''
 
+_DIMS = {}
+def _dims(path):
+    import subprocess
+    if path not in _DIMS:
+        out = subprocess.run(['sips', '-g', 'pixelWidth', '-g', 'pixelHeight', os.path.join(ROOT, path.lstrip('/'))], capture_output=True, text=True).stdout
+        w = re.search(r'pixelWidth: (\d+)', out); h = re.search(r'pixelHeight: (\d+)', out)
+        _DIMS[path] = (int(w.group(1)), int(h.group(1))) if w and h else None
+    return _DIMS[path]
+
+def add_dims(html_text):
+    def sub(m):
+        tag = m.group(0); src = re.search(r'src="(/assets/(?:img|logos)/[^"]+)"', tag)
+        if not src or 'srcset=' in tag: return tag
+        d = _dims(src.group(1))
+        if not d: return tag
+        tag = re.sub(r'\s(width|height)="\d+"', '', tag)
+        return tag.replace('<img ', f'<img width="{d[0]}" height="{d[1]}" ', 1)
+    return re.sub(r'<img[^>]*>', sub, html_text)
+
 def write(path, content):
+    if path.endswith('.html'): content = add_dims(content)
     full = os.path.join(ROOT, path.lstrip('/'))
     os.makedirs(os.path.dirname(full), exist_ok=True)
     open(full, 'w', encoding='utf-8').write(content)
