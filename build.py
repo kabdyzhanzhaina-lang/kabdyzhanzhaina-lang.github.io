@@ -47,10 +47,13 @@ def page(title, desc, path, body, light_nav=True):
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:image" content="https://www.yume.cloud/assets/img/og.png">
 <meta property="og:url" content="https://www.yume.cloud{path}">
-<link rel="icon" href="/assets/img/favicon.jpg">
+<link rel="icon" href="/assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Golos+Text:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Golos+Text:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Golos+Text:wght@400;500;600&display=swap"></noscript>
 <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
@@ -75,15 +78,15 @@ SEGMENTS = [
  dict(slug='tools', icon='i-drill', name='Строительный инструмент и оборудование', short='Инструмент и оборудование',
   h1='Прокат инструмента без потерь, долгов и тетрадей',
   lead='Перфораторы, бетономешалки, леса, генераторы. Yume знает, где каждая единица, кто её взял, когда вернёт и сколько должен.',
-  img='/assets/img/inventory-illustration.png', imgw=1600,
+  img='/assets/img/inventory-illustration.webp', imgw=1600,
   pains=[('Не видно, что свободно','Менеджер звонит на склад, чтобы узнать, есть ли перфоратор. Клиент в это время уходит к конкуренту.'),
          ('Долги всплывают поздно','Клиент взял леса на неделю, вернул через месяц. Про доплату вспомнили, когда он уже уехал.'),
          ('Мошенники и невозвраты','Один ушедший генератор стоит как 40 аренд. Проверить человека до выдачи негде.'),
          ('Договор вручную','Word, печать, подпись, скан. Пятнадцать минут на каждого клиента и стопка бумаги.')],
-  gains=[('Остатки в реальном времени','Календарь и статусы по каждой единице: свободно, выдано, на ремонте, просрочено. С любой точки и с телефона.','/assets/img/icon-calendar.jpg'),
-         ('Проверка по ИИН до выдачи','Общий реестр должников прокатчиков и ваш чёрный список. Результат появляется прямо в карточке аренды.','/assets/img/app-table.png'),
-         ('Договор и акт за минуту','Данные клиента подтягиваются, подпись через SMS. Фото состояния при выдаче и возврате хранятся в аренде.','/assets/img/icon-contract.png'),
-         ('Залоги, доплаты, просрочки','Система сама считает просрочку и износ, напоминает клиенту и показывает, кто и сколько должен.','/assets/img/icon-finance.png')],
+  gains=[('Остатки в реальном времени','Календарь и статусы по каждой единице: свободно, выдано, на ремонте, просрочено. С любой точки и с телефона.','/assets/img/icon-calendar.webp'),
+         ('Проверка по ИИН до выдачи','Общий реестр должников прокатчиков и ваш чёрный список. Результат появляется прямо в карточке аренды.','/assets/img/app-table.webp'),
+         ('Договор и акт за минуту','Данные клиента подтягиваются, подпись через SMS. Фото состояния при выдаче и возврате хранятся в аренде.','/assets/img/icon-contract.webp'),
+         ('Залоги, доплаты, просрочки','Система сама считает просрочку и износ, напоминает клиенту и показывает, кто и сколько должен.','/assets/img/icon-finance.webp')],
   modules=['Учёт аренды и календарь','Каталог и склад','Проверка клиентов','Онлайн-договоры','Финансы и залоги','Мастерская'],
   case=dict(co='StroyПрокат', img='/assets/img/av-stroyprokat.jpg', seg='Строительное оборудование', metric='0', metric_l='мошенников после подключения реестра должников',
             q='Мы значительно уменьшили время оформления договоров. Контроль действующей и просроченной аренды стал проще. А когда появился реестр должников и ЧС, стало быстрее и безопаснее. Мошенники понимают, что с ними мы работать не будем.', who='Фахруддин'),
@@ -94,15 +97,15 @@ SEGMENTS = [
  dict(slug='events', icon='i-party', name='Ивент-инвентарь и мебель', short='Ивент и мебель',
   h1='Комплекты на сотни позиций без наложений и потерь',
   lead='Стулья, столы, шатры, свет, посуда. Yume собирает комплекты под проект, следит за датами и считает, что вернулось, а что нет.',
-  img='/assets/img/icon-calendar.jpg', imgw=700,
+  img='/assets/img/icon-calendar.webp', imgw=700,
   pains=[('Наложение дат','Два свадебных заказа на одни и те же 200 стульев. Узнаёте об этом в пятницу вечером.'),
          ('Комплектность','Уехало 180 бокалов, вернулось 171. Кто считал и когда, уже никто не помнит.'),
          ('Логистика в чатах','Адреса, время монтажа и водители живут в WhatsApp. Один пропущенный звонок и площадка стоит пустая.'),
          ('Проекты в Excel','Смета в одном файле, состав в другом, оплаты в третьем. Прибыль по мероприятию не считает никто.')],
-  gains=[('Календарь по проектам','Каждое мероприятие видно на общем календаре с датами вывоза, монтажа и возврата. Наложение невозможно.','/assets/img/icon-calendar.jpg'),
-         ('Комплекты и наборы','Соберите набор «Свадьба на 100 гостей» один раз и добавляйте в заказ одним кликом. Состав раскрывается до каждой позиции.','/assets/img/app-table.png'),
-         ('Приёмка по списку','При возврате менеджер отмечает позиции с телефона. Недостача и повреждения сразу превращаются в доплату.','/assets/img/icon-devices.png'),
-         ('Смета и оплата в одном месте','Договор, предоплата, остаток и доплаты по проекту. Прибыль каждого мероприятия видна без таблиц.','/assets/img/icon-finance.png')],
+  gains=[('Календарь по проектам','Каждое мероприятие видно на общем календаре с датами вывоза, монтажа и возврата. Наложение невозможно.','/assets/img/icon-calendar.webp'),
+         ('Комплекты и наборы','Соберите набор «Свадьба на 100 гостей» один раз и добавляйте в заказ одним кликом. Состав раскрывается до каждой позиции.','/assets/img/app-table.webp'),
+         ('Приёмка по списку','При возврате менеджер отмечает позиции с телефона. Недостача и повреждения сразу превращаются в доплату.','/assets/img/icon-devices.webp'),
+         ('Смета и оплата в одном месте','Договор, предоплата, остаток и доплаты по проекту. Прибыль каждого мероприятия видна без таблиц.','/assets/img/icon-finance.webp')],
   modules=['Календарь бронирований','Комплекты и наборы','Онлайн-договоры','Финансы и предоплаты','Доставка и монтаж','Приложение для приёмки'],
   case=dict(co='Prokat Invest', img='/assets/img/av-prokatinvest.png', seg='Инвентарь и оборудование', metric='1 экран', metric_l='вместо блокнотов и таблиц по всем проектам',
             q='Долгое время вели учёт чуть ли не в блокнотах и таблицах. С Yume наконец-то увидели реальные цифры по бизнесу: сразу понятно, на чём мы зарабатываем, а где деньги просто висят.', who='Даулет'),
@@ -113,15 +116,15 @@ SEGMENTS = [
  dict(slug='sport', icon='i-ski', name='Спорт и горнолыжный прокат', short='Спорт и горнолыжный',
   h1='Очередь в сезон движется быстро, когда выдача занимает минуту',
   lead='Лыжи, сноуборды, велосипеды, сапы, коньки. Yume выдаёт по размеру и ростовке, принимает оплату и напоминает о возврате.',
-  img='/assets/img/app-table.png', imgw=1600,
+  img='/assets/img/app-table.webp', imgw=1600,
   pains=[('Очередь на выдаче','Утром субботы у стойки 30 человек. Каждому подобрать ботинки, записать паспорт, взять залог.'),
          ('Размеры и ростовки','Сорок пар ботинок 42 размера числятся, а в наличии три. Остальные где-то на склоне.'),
          ('Почасовая путаница','Взял на два часа, вернул через пять. Кто и сколько доплачивает, спорят на месте.'),
          ('Сезонная команда','Новые сотрудники каждую зиму. Обучать их тетради и своим правилам некогда.')],
-  gains=[('Выдача за минуту с планшета','Клиент по телефону, инвентарь по штрих-коду, размер как атрибут. Договор подписывается на экране.','/assets/img/icon-devices.png'),
-         ('Остатки по размерам','Каталог хранит размеры, ростовки и жёсткость. Видно, что свободно именно в нужном размере прямо сейчас.','/assets/img/app-table.png'),
-         ('Почасовые и дневные тарифы','Час, полдня, день, абонемент. Система считает стоимость и доплату за задержку без споров.','/assets/img/icon-finance.png'),
-         ('Понятно новичку','Один экран выдачи и один экран возврата. Сезонный сотрудник работает самостоятельно с первого дня.','/assets/img/phone.png')],
+  gains=[('Выдача за минуту с планшета','Клиент по телефону, инвентарь по штрих-коду, размер как атрибут. Договор подписывается на экране.','/assets/img/icon-devices.webp'),
+         ('Остатки по размерам','Каталог хранит размеры, ростовки и жёсткость. Видно, что свободно именно в нужном размере прямо сейчас.','/assets/img/app-table.webp'),
+         ('Почасовые и дневные тарифы','Час, полдня, день, абонемент. Система считает стоимость и доплату за задержку без споров.','/assets/img/icon-finance.webp'),
+         ('Понятно новичку','Один экран выдачи и один экран возврата. Сезонный сотрудник работает самостоятельно с первого дня.','/assets/img/phone.webp')],
   modules=['Быстрая выдача','Каталог с размерами','Почасовые тарифы','Онлайн-договоры','Оплаты и залоги','Мастерская и сервис'],
   case=dict(co='Tobe.kz', img='/assets/img/av-tobe.png', seg='Прокат инвентаря', metric='1 день', metric_l='на обучение нового сотрудника',
             q='Для нас самое главное скорость работы. Сервис позволяет быстро создавать новые сделки и управлять ими без путаницы. Все процессы прозрачны, и даже новички в команде легко справляются.', who='Абулхаир'),
@@ -132,15 +135,15 @@ SEGMENTS = [
  dict(slug='fashion', icon='i-shirt', name='Одежда, платья и костюмы', short='Одежда и костюмы',
   h1='Каждое платье забронировано, почищено и вернётся вовремя',
   lead='Вечерние и свадебные платья, костюмы, аксессуары. Yume ведёт брони на будущие даты, статус чистки и витрину с фото.',
-  img='/assets/img/phone.png', imgw=900,
+  img='/assets/img/phone.webp', imgw=900,
   pains=[('Брони на будущее','Платье забронировано на 14 октября, а его сдали ещё двоим на соседние даты. Химчистка между ними не успевает.'),
          ('Статус вещи','Где сейчас платье: у клиентки, в чистке, на ремонте молнии? Ответ знает только администратор, которая в отпуске.'),
          ('Примерки и запись','Запись на примерку в Instagram, бронь в тетради, залог в Kaspi. Три источника, ни одного полного.'),
          ('Залоги и повреждения','Пятно на подоле обнаружили через неделю. Доказать, чьё оно, уже невозможно.')],
-  gains=[('Календарь броней с буфером','Между арендами автоматически ставится время на чистку. Забронировать вещь в этот промежуток нельзя.','/assets/img/icon-calendar.jpg'),
-         ('Статус «в чистке» и «на ремонте»','Каждая вещь проходит цикл: выдана, вернулась, чистка, готова. Витрина показывает только доступное.','/assets/img/app-table.png'),
-         ('Витрина с фото и онлайн-запись','Клиентка выбирает платье на сайте, записывается на примерку, заявка падает в календарь.','/assets/img/icon-devices.png'),
-         ('Фото при выдаче и возврате','Состояние фиксируется с телефона. Повреждение и доплата подтверждаются снимками из карточки аренды.','/assets/img/icon-contract.png')],
+  gains=[('Календарь броней с буфером','Между арендами автоматически ставится время на чистку. Забронировать вещь в этот промежуток нельзя.','/assets/img/icon-calendar.webp'),
+         ('Статус «в чистке» и «на ремонте»','Каждая вещь проходит цикл: выдана, вернулась, чистка, готова. Витрина показывает только доступное.','/assets/img/app-table.webp'),
+         ('Витрина с фото и онлайн-запись','Клиентка выбирает платье на сайте, записывается на примерку, заявка падает в календарь.','/assets/img/icon-devices.webp'),
+         ('Фото при выдаче и возврате','Состояние фиксируется с телефона. Повреждение и доплата подтверждаются снимками из карточки аренды.','/assets/img/icon-contract.webp')],
   modules=['Календарь броней','Витрина с фото','Статусы и чистка','Онлайн-договоры','Залоги и оплаты','Запись на примерку'],
   case=dict(co='ToRent', img='/assets/img/av-torent.png', seg='Прокат инвентаря', metric='1 место', metric_l='для всех броней, платежей и клиентов',
             q='Сервис идеально подошёл для нашего бизнеса. Мы используем его для отслеживания инвентаря, учёта платежей и работы с клиентами. Очень удобно, что все данные находятся в одном месте.', who='Дастан'),
@@ -151,15 +154,15 @@ SEGMENTS = [
  dict(slug='media', icon='i-camera', name='Фото-, видео- и звуковая техника', short='Фото и видео',
   h1='Дорогая техника уходит только проверенным клиентам',
   lead='Камеры, объективы, свет, звук. Yume проверяет клиента по ИИН, хранит серийные номера и сверяет комплектность при возврате.',
-  img='/assets/img/icon-devices.png', imgw=800,
+  img='/assets/img/icon-devices.webp', imgw=800,
   pains=[('Один невозврат равен месяцу работы','Камера за 1,5 млн уехала с человеком по чужим документам. Проверить его было негде.'),
          ('Комплектность','Вернули кейс, а внутри нет батареи и одной карты памяти. Заметили через день, когда набор уже уехал следующему.'),
          ('Серийные номера','Пять одинаковых объективов, но сломан конкретный. Чей он был в последний раз, неизвестно.'),
          ('Залоги в мессенджерах','Кто, сколько и за что оставил залог, хранится в переписке. Вернуть правильно получается не всегда.')],
-  gains=[('Проверка клиента по ИИН','Общий реестр должников и чёрный список прокатчиков. Проверка встроена в оформление аренды.','/assets/img/app-table.png'),
-         ('Серийные номера и история','Каждая единица с серийником, историей аренд, ремонтов и фото. Понятно, кто и когда брал именно этот объектив.','/assets/img/inventory-illustration.png'),
-         ('Комплектность по чек-листу','Состав набора проверяется при выдаче и возврате по списку. Недостача сразу превращается в доплату.','/assets/img/icon-contract.png'),
-         ('Залоги и страховка','Залог, страховка и лимит ответственности фиксируются в договоре, зачёт и возврат считаются автоматически.','/assets/img/icon-finance.png')],
+  gains=[('Проверка клиента по ИИН','Общий реестр должников и чёрный список прокатчиков. Проверка встроена в оформление аренды.','/assets/img/app-table.webp'),
+         ('Серийные номера и история','Каждая единица с серийником, историей аренд, ремонтов и фото. Понятно, кто и когда брал именно этот объектив.','/assets/img/inventory-illustration.webp'),
+         ('Комплектность по чек-листу','Состав набора проверяется при выдаче и возврате по списку. Недостача сразу превращается в доплату.','/assets/img/icon-contract.webp'),
+         ('Залоги и страховка','Залог, страховка и лимит ответственности фиксируются в договоре, зачёт и возврат считаются автоматически.','/assets/img/icon-finance.webp')],
   modules=['Проверка клиентов','Каталог с серийниками','Комплекты и чек-листы','Онлайн-договоры','Залоги и финансы','Мастерская'],
   case=dict(co='ProRent', img='/assets/img/av-prorent.jpg', seg='Прокат техники и оборудования', metric='15 → 5 мин', metric_l='на оформление одного клиента',
             q='Раньше оформление клиента занимало до 15 минут и было много ручной работы. С Yume сократили это время до 5 минут. Перестали терять оборудование, теперь всё под контролем и без хаоса.', who='Евгений'),
@@ -295,7 +298,7 @@ def contacts():
       <a class="ccard" href="mailto:sales@yume.cloud"><i><svg><use href="#i-inbox"/></svg></i><div><small>Продажи и партнёрство</small><b>sales@yume.cloud</b><span>Коммерческие предложения, интеграции, договоры</span></div><svg class="ccard__arr"><use href="#i-arrow"/></svg></a>
       <a class="ccard" href="mailto:product@yume.cloud"><i><svg><use href="#i-doc"/></svg></i><div><small>Поддержка клиентов</small><b>product@yume.cloud</b><span>Вопросы по работе системы, идеи и пожелания</span></div><svg class="ccard__arr"><use href="#i-arrow"/></svg></a>
       <div class="ccard ccard--static"><i><svg><use href="#i-store"/></svg></i><div><small>Офис</small><b>Алматы, Казахстан</b><span>Встречи по договорённости. Приезжаем к клиентам в Алматы и Астане, остальным показываем по видеосвязи.</span></div></div>
-      <div class="ccard ccard--static"><i><svg><use href="#i-box"/></svg></i><div><small>Мы в сети</small><b><a href="https://www.instagram.com/yumecloudx/" rel="noopener">Instagram</a> · <a href="https://www.linkedin.com/company/yume-cloud/" rel="noopener">LinkedIn</a> · <a href="https://www.yume.cloud/feed">Лента прокатчиков</a></b><span>Новости продукта, кейсы клиентов и советы по прокату</span></div></div>
+      <div class="ccard ccard--static"><i><svg><use href="#i-box"/></svg></i><div><small>Мы в сети</small><b><a href="https://www.instagram.com/yumecloudx/" rel="noopener">Instagram</a> · <a href="https://www.linkedin.com/company/yume-cloud/" rel="noopener">LinkedIn</a> · <a href="/feed/">Лента прокатчиков</a></b><span>Новости продукта, кейсы клиентов и советы по прокату</span></div></div>
     </div>
     <div class="contacts__form" data-reveal="right">
       <h2 style="font-size:26px;margin-bottom:8px">Оставьте заявку</h2>
@@ -311,7 +314,7 @@ def contacts():
       <a class="quick__i" href="https://account.yume.cloud/auth/register"><h3>Начать без звонка</h3><p>Регистрация занимает две минуты, первые 14 дней бесплатно и без карты.</p><span class="link">Создать аккаунт <svg><use href="#i-arrow"/></svg></span></a>
       <a class="quick__i" href="/solutions/"><h3>Посмотреть своё решение</h3><p>Инструмент, ивент, спорт, одежда, техника. Что именно меняется в каждом сегменте.</p><span class="link">К решениям <svg><use href="#i-arrow"/></svg></span></a>
       <a class="quick__i" href="/#faq"><h3>Частые вопросы</h3><p>Перенос из Excel, договоры, права доступа, работа с телефона.</p><span class="link">Читать ответы <svg><use href="#i-arrow"/></svg></span></a>
-      <a class="quick__i" href="https://www.yume.cloud/mobiledownload"><h3>Скачать приложение</h3><p>iOS и Android для точки проката, macOS и Windows для офиса.</p><span class="link">Скачать <svg><use href="#i-arrow"/></svg></span></a>
+      <a class="quick__i" href="/download/"><h3>Скачать приложение</h3><p>iOS и Android для точки проката, macOS и Windows для офиса.</p><span class="link">Скачать <svg><use href="#i-arrow"/></svg></span></a>
     </div>
   </div>
 </section>
@@ -381,7 +384,7 @@ def check_page():
       <h2>Три шага между заявкой и выдачей</h2>
       <ul class="start__steps" style="margin-top:24px">{sh}</ul>
     </div>
-    <div class="start__visual" data-reveal="scale"><img src="/assets/img/phone.png" alt="Проверка клиента в приложении Yume" width="900" loading="lazy"></div>
+    <div class="start__visual" data-reveal="scale"><img width="800" height="1644" src="/assets/img/phone.webp" alt="Проверка клиента в приложении Yume" loading="lazy"></div>
   </div>
 </section>
 
@@ -420,7 +423,7 @@ def download_page():
       </div>
       <p class="note-sm">Установочные файлы для macOS и Windows пришлём в WhatsApp, напишите «десктоп» на +7 777 947 99 90.</p>
     </div>
-    <div class="phero__vis" data-reveal="scale"><img src="/assets/img/phone.png" width="900" alt="Мобильное приложение Yume" fetchpriority="high"></div>
+    <div class="phero__vis" data-reveal="scale"><img width="800" height="1644" src="/assets/img/phone.webp" alt="Мобильное приложение Yume" fetchpriority="high"></div>
   </div>
 </section>
 <section class="section section--soft">
@@ -530,6 +533,28 @@ _page = page
 def page(title, desc, path, body, light_nav=True):
     return _page(title, desc, path, body, light_nav).replace('</head>', ANALYTICS + '\n</head>', 1) if ANALYTICS else _page(title, desc, path, body, light_nav)
 
+
+def service_files():
+    pages = ['/', '/solutions/', '/check/', '/contacts/', '/download/', '/feed/', '/legal/', '/legal/privacy/', '/delete-account/'] + [f'/solutions/{s["slug"]}/' for s in SEGMENTS]
+    today = __import__('datetime').date.today().isoformat()
+    urls = ''.join(f'  <url><loc>https://www.yume.cloud{p}</loc><lastmod>{today}</lastmod><changefreq>{"weekly" if p in ("/", "/solutions/") else "monthly"}</changefreq><priority>{"1.0" if p == "/" else "0.8" if p.startswith("/solutions") or p == "/check/" else "0.5"}</priority></url>\n' for p in pages)
+    write('/sitemap.xml', f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
+    write('/robots.txt', 'User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: https://www.yume.cloud/sitemap.xml\n')
+    body = """
+<section class="phero phero--center" style="min-height:70vh;display:grid;align-items:center">
+  <div class="wrap">
+    <p class="eyebrow">Ошибка 404</p>
+    <h1>Такой страницы нет</h1>
+    <p class="lead">Возможно, ссылка устарела после обновления сайта. Вот куда можно пойти дальше.</p>
+    <div class="hero__ctas" style="opacity:1;animation:none;margin-top:28px">
+      <a class="btn btn--lg" href="/">На главную <svg><use href="#i-arrow"/></svg></a>
+      <a class="btn btn--lg btn--ghost" href="/solutions/">Решения</a>
+      <a class="btn btn--lg btn--ghost" href="/check/">Проверка клиента</a>
+    </div>
+  </div>
+</section>"""
+    write('/404.html', page('Страница не найдена — Yume', 'Страница не найдена.', '/404.html', body))
+
 for i, s in enumerate(SEGMENTS):
     solution_page(s, i)
 solutions_index()
@@ -538,3 +563,4 @@ check_page()
 download_page()
 feed_page()
 legal_pages()
+service_files()

@@ -16,27 +16,6 @@
   $('.nav__burger')?.addEventListener('click', () => nav.classList.toggle('is-open'));
   $$('.nav__menu a').forEach(a => a.addEventListener('click', () => nav.classList.remove('is-open')));
 
-  /* ---------- HERO: split headline into words ---------- */
-  const h1 = $('.hero h1');
-  if (h1 && !reduced) {
-    let i = 0;
-    const split = node => {
-      [...node.childNodes].forEach(n => {
-        if (n.nodeType === 3) {
-          const frag = document.createDocumentFragment();
-          n.textContent.split(/(\s+)/).forEach(t => {
-            if (!t.trim()) { frag.append(t); return; }
-            const w = document.createElement('span'); w.className = 'w';
-            const s = document.createElement('i'); s.textContent = t; s.style.setProperty('--i', i++);
-            w.append(s); frag.append(w);
-          });
-          n.replaceWith(frag);
-        } else if (n.nodeType === 1) split(n);
-      });
-    };
-    split(h1);
-  }
-
   /* ---------- HERO: cursor glow + tilt ---------- */
   if (hero && matchMedia('(pointer:fine)').matches && !reduced) {
     const glow = $('.hero__glow'); const frame = $('.hero__frame');
