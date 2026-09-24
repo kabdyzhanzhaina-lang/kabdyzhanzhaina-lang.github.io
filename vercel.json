@@ -1,0 +1,97 @@
+{
+ "cleanUrls": true,
+ "trailingSlash": true,
+ "headers": [
+  {
+   "source": "/assets/(.*)",
+   "headers": [
+    {
+     "key": "Cache-Control",
+     "value": "public, max-age=31536000, immutable"
+    }
+   ]
+  }
+ ],
+ "redirects": [
+  {
+   "source": "/tools",
+   "destination": "/solutions/tools/",
+   "permanent": true
+  },
+  {
+   "source": "/tools/",
+   "destination": "/solutions/tools/",
+   "permanent": true
+  },
+  {
+   "source": "/blacklist",
+   "destination": "/check/",
+   "permanent": true
+  },
+  {
+   "source": "/blacklist/",
+   "destination": "/check/",
+   "permanent": true
+  },
+  {
+   "source": "/mobiledownload",
+   "destination": "/download/",
+   "permanent": true
+  },
+  {
+   "source": "/mobiledownload/",
+   "destination": "/download/",
+   "permanent": true
+  },
+  {
+   "source": "/desktopdownload",
+   "destination": "/download/",
+   "permanent": true
+  },
+  {
+   "source": "/desktopdownload/",
+   "destination": "/download/",
+   "permanent": true
+  },
+  {
+   "source": "/privacy",
+   "destination": "/legal/privacy/",
+   "permanent": true
+  },
+  {
+   "source": "/privacy/",
+   "destination": "/legal/privacy/",
+   "permanent": true
+  },
+  {
+   "source": "/taxi",
+   "destination": "/solutions/",
+   "permanent": false
+  },
+  {
+   "source": "/taxi/",
+   "destination": "/solutions/",
+   "permanent": false
+  },
+  {
+   "source": "/taxishort",
+   "destination": "/solutions/",
+   "permanent": false
+  },
+  {
+   "source": "/taxishort/",
+   "destination": "/solutions/",
+   "permanent": false
+  },
+  {
+   "source": "/transport",
+   "destination": "/solutions/",
+   "permanent": false
+  },
+  {
+   "source": "/transport/",
+   "destination": "/solutions/",
+   "permanent": false
+  }
+ ]
+}
