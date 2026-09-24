@@ -1,6 +1,9 @@
 // Vercel serverless proxy for the eGov debtors registry.
 // Keeps the API token on the server: set YUME_API_TOKEN in Vercel → Settings → Environment Variables.
 // Optional: YUME_TENANT_ID (default 4), YUME_API_BASE (default https://api.yume.cloud).
+let cfg = {};
+try { cfg = (await import('./config.js')).default || {}; } catch (e) { cfg = {}; }
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'no-store');
@@ -12,7 +15,7 @@ export default async function handler(req, res) {
 
   const base = process.env.YUME_API_BASE || 'https://api.yume.cloud';
   const headers = { Accept: 'application/json', 'X-Tenant-Id': process.env.YUME_TENANT_ID || '4' };
-  const token = process.env.YUME_API_TOKEN;
+  const token = cfg.YUME_API_TOKEN || process.env.YUME_API_TOKEN;
   if (token) headers.Authorization = /^(Bearer|Token|JWT) /i.test(token) ? token : `Bearer ${token}`;
 
   try {

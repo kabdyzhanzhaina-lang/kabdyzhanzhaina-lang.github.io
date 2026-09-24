@@ -2,11 +2,16 @@
 // Env vars (Vercel → Settings → Environment Variables):
 //   TELEGRAM_BOT_TOKEN  — token from @BotFather
 //   TELEGRAM_CHAT_ID    — chat/group id where the bot should post (bot must be a member)
+// Ключи берутся из api/config.js (см. api/config.example.js) или из переменных окружения Vercel.
+let cfg = {};
+try { cfg = (await import('./config.js')).default || {}; } catch (e) { cfg = {}; }
+
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'POST only' });
 
-  const token = process.env.TELEGRAM_BOT_TOKEN, chat = process.env.TELEGRAM_CHAT_ID;
+  const token = cfg.TELEGRAM_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN;
+  const chat = cfg.TELEGRAM_CHAT_ID || process.env.TELEGRAM_CHAT_ID;
   if (!token || !chat) return res.status(503).json({ ok: false, error: 'not_configured' });
 
   let b = req.body;
