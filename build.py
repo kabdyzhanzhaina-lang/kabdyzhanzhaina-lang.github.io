@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Generates inner pages (solutions, contacts) from index.html partials."""
 import re, os, html
+from content import CARDS, EXTRA_SEGMENTS, FEATURES, FEATURE_LINKS
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 idx = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
@@ -105,9 +106,9 @@ SEGMENTS = [
          ('Договор вручную','Word, печать, подпись, скан. Пятнадцать минут на каждого клиента и стопка бумаги.')],
   gains=[('Остатки в реальном времени','Календарь и статусы по каждой единице: свободно, выдано, на ремонте, просрочено. С любой точки и с телефона.','/assets/img/icon-calendar.webp'),
          ('Проверка по ИИН до выдачи','Общий реестр должников прокатчиков и ваш чёрный список. Результат появляется прямо в карточке аренды.','/assets/img/app-table.webp'),
-         ('Договор и акт за минуту','Данные клиента подтягиваются, подпись через SMS. Фото состояния при выдаче и возврате хранятся в аренде.','/assets/img/icon-contract.webp'),
+         ('Договор и акт за минуту','Данные клиента подтягиваются, подпись через eGov или SMS. Фото состояния при выдаче и возврате хранятся в аренде.','/assets/img/icon-contract.webp'),
          ('Залоги, доплаты, просрочки','Система сама считает просрочку и износ, напоминает клиенту и показывает, кто и сколько должен.','/assets/img/icon-finance.webp')],
-  modules=['Учёт аренды и календарь','Каталог и склад','Проверка клиентов','Онлайн-договоры','Финансы и залоги','Мастерская'],
+  modules=['Учёт аренды и календарь','Каталог и склад','Проверка клиентов','Договоры с eGov-подписью','Финансы и залоги','Мастерская'],
   case=dict(co='StroyПрокат', img='/assets/img/av-stroyprokat.jpg', seg='Строительное оборудование', metric='0', metric_l='мошенников после подключения реестра должников',
             q='Мы значительно уменьшили время оформления договоров. Контроль действующей и просроченной аренды стал проще. А когда появился реестр должников и ЧС, стало быстрее и безопаснее. Мошенники понимают, что с ними мы работать не будем.', who='Фахруддин'),
   faq=[('Как учитывать расходники и износ?','Для каждой единицы ведётся история аренд и ремонтов. Расходники списываются при выдаче, износ и стоимость ремонта видны в доходности единицы.'),
@@ -126,7 +127,7 @@ SEGMENTS = [
          ('Серийные номера и история','Каждая единица с серийником, историей аренд, ремонтов и фото. Понятно, кто и когда брал именно этот объектив.','/assets/img/inventory-illustration.webp'),
          ('Комплектность по чек-листу','Состав набора проверяется при выдаче и возврате по списку. Недостача сразу превращается в доплату.','/assets/img/icon-contract.webp'),
          ('Залоги и страховка','Залог, страховка и лимит ответственности фиксируются в договоре, зачёт и возврат считаются автоматически.','/assets/img/icon-finance.webp')],
-  modules=['Проверка клиентов','Каталог с серийниками','Комплекты и чек-листы','Онлайн-договоры','Залоги и финансы','Мастерская'],
+  modules=['Проверка клиентов','Каталог с серийниками','Комплекты и чек-листы','Договоры с eGov-подписью','Залоги и финансы','Мастерская'],
   case=dict(co='ProRent', img='/assets/img/av-prorent.jpg', seg='Прокат техники и оборудования', metric='15 → 5 мин', metric_l='на оформление одного клиента',
             q='Раньше оформление клиента занимало до 15 минут и было много ручной работы. С Yume сократили это время до 5 минут. Перестали терять оборудование, теперь всё под контролем и без хаоса.', who='Евгений'),
   faq=[('Откуда берутся данные для проверки?','Реестр должников пополняют сами прокатчики на Yume, больше 200 компаний. Плюс ваш собственный чёрный список.'),
@@ -145,7 +146,7 @@ SEGMENTS = [
          ('Комплекты и наборы','Соберите набор «Свадьба на 100 гостей» один раз и добавляйте в заказ одним кликом. Состав раскрывается до каждой позиции.','/assets/img/app-table.webp'),
          ('Приёмка по списку','При возврате менеджер отмечает позиции с телефона. Недостача и повреждения сразу превращаются в доплату.','/assets/img/icon-devices.webp'),
          ('Смета и оплата в одном месте','Договор, предоплата, остаток и доплаты по проекту. Прибыль каждого мероприятия видна без таблиц.','/assets/img/icon-finance.webp')],
-  modules=['Календарь бронирований','Комплекты и наборы','Онлайн-договоры','Финансы и предоплаты','Доставка и монтаж','Приложение для приёмки'],
+  modules=['Календарь бронирований','Комплекты и наборы','Договоры с eGov-подписью','Финансы и предоплаты','Доставка и монтаж','Приложение для приёмки'],
   case=dict(co='Prokat Invest', img='/assets/img/av-prokatinvest.png', seg='Инвентарь и оборудование', metric='1 экран', metric_l='вместо блокнотов и таблиц по всем проектам',
             q='Долгое время вели учёт чуть ли не в блокнотах и таблицах. С Yume наконец-то увидели реальные цифры по бизнесу: сразу понятно, на чём мы зарабатываем, а где деньги просто висят.', who='Даулет'),
   faq=[('Можно ли бронировать инвентарь за полгода вперёд?','Да. Бронь ставится на любые даты, календарь показывает загрузку и свободные остатки на выбранный период.'),
@@ -164,7 +165,7 @@ SEGMENTS = [
          ('Остатки по размерам','Каталог хранит размеры, ростовки и жёсткость. Видно, что свободно именно в нужном размере прямо сейчас.','/assets/img/app-table.webp'),
          ('Почасовые и дневные тарифы','Час, полдня, день, абонемент. Система считает стоимость и доплату за задержку без споров.','/assets/img/icon-finance.webp'),
          ('Понятно новичку','Один экран выдачи и один экран возврата. Сезонный сотрудник работает самостоятельно с первого дня.','/assets/img/phone.webp')],
-  modules=['Быстрая выдача','Каталог с размерами','Почасовые тарифы','Онлайн-договоры','Оплаты и залоги','Мастерская и сервис'],
+  modules=['Быстрая выдача','Каталог с размерами','Почасовые тарифы','Договоры с eGov-подписью','Оплаты и залоги','Мастерская и сервис'],
   case=dict(co='Tobe.kz', img='/assets/img/av-tobe.png', seg='Прокат инвентаря', metric='1 день', metric_l='на обучение нового сотрудника',
             q='Для нас самое главное скорость работы. Сервис позволяет быстро создавать новые сделки и управлять ими без путаницы. Все процессы прозрачны, и даже новички в команде легко справляются.', who='Абулхаир'),
   faq=[('Можно ли выдавать по штрих-коду?','Да. На инвентарь печатаются этикетки, выдача и возврат делаются сканером или камерой телефона.'),
@@ -183,7 +184,7 @@ SEGMENTS = [
          ('Статус «в чистке» и «на ремонте»','Каждая вещь проходит цикл: выдана, вернулась, чистка, готова. Витрина показывает только доступное.','/assets/img/app-table.webp'),
          ('Витрина с фото и онлайн-запись','Клиентка выбирает платье на сайте, записывается на примерку, заявка падает в календарь.','/assets/img/icon-devices.webp'),
          ('Фото при выдаче и возврате','Состояние фиксируется с телефона. Повреждение и доплата подтверждаются снимками из карточки аренды.','/assets/img/icon-contract.webp')],
-  modules=['Календарь броней','Витрина с фото','Статусы и чистка','Онлайн-договоры','Залоги и оплаты','Запись на примерку'],
+  modules=['Календарь броней','Витрина с фото','Статусы и чистка','Договоры с eGov-подписью','Залоги и оплаты','Запись на примерку'],
   case=dict(co='ToRent', img='/assets/img/av-torent.png', seg='Прокат инвентаря', metric='1 место', metric_l='для всех броней, платежей и клиентов',
             q='Сервис идеально подошёл для нашего бизнеса. Мы используем его для отслеживания инвентаря, учёта платежей и работы с клиентами. Очень удобно, что все данные находятся в одном месте.', who='Дастан'),
   faq=[('Можно ли загрузить витрину с фото?','Да. У каждой вещи несколько фото, размер, цвет и цена. Витрина публикуется по ссылке или встраивается на ваш сайт.'),
@@ -191,6 +192,10 @@ SEGMENTS = [
        ('Есть ли размерная сетка?','Размеры, рост и обхваты хранятся как атрибуты, по ним работает поиск и фильтр витрины.'),
        ('Можно ли принимать предоплату онлайн?','Да, ссылка на оплату отправляется клиенту в WhatsApp, статус брони меняется автоматически.')]),
 ]
+
+SEGMENTS += EXTRA_SEGMENTS
+for _s in SEGMENTS:
+    _s.setdefault('card', CARDS.get(_s['slug'], _s['lead']))
 
 ICON_X = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>'
 
@@ -207,6 +212,20 @@ def solution_page(s, i):
     faq = ''.join(f'<div class="q{" is-open" if k == 0 else ""}"><button>{q}<i></i></button><div class="q__a"><div><p>{a}</p></div></div></div>' for k, (q, a) in enumerate(s['faq']))
     other_links = ''.join(f'<a class="chip" href="/solutions/{o["slug"]}/"><svg><use href="#{o["icon"]}"/></svg>{o["short"]}</a>' for o in others)
     c = s['case']
+    case_html = (f'''
+<section class="section">
+  <div class="wrap bigcase" data-reveal>
+    <div class="bigcase__m"><div class="case__co"><img src="{c['img']}" alt=""><div><b>{c['co']}</b><small>{c['seg']}</small></div></div><div class="case__m"><b>{c['metric']}</b><span>{c['metric_l']}</span></div></div>
+    <div class="bigcase__q"><div class="stars"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></div><q>{c['q']}</q><p class="bigcase__who">{c['who']}, {c['co']}</p><a class="link" href="/#cases">Все клиенты <svg><use href="#i-arrow"/></svg></a></div>
+  </div>
+</section>''' if c else '''
+<section class="section">
+  <div class="wrap nums-dark" style="background:var(--bg-soft);color:var(--ink)" data-stagger>
+    <div class="num"><b data-count="200" data-suffix="+">0</b><span>прокатов уже работают на платформе Yume</span></div>
+    <div class="num"><b>1 день</b><span>от регистрации до первой аренды в системе</span></div>
+    <div class="num"><b>14 дней</b><span>бесплатно, все модули открыты без карты</span></div>
+  </div>
+</section>''')
     body = f'''
 <section class="phero">
   <div class="wrap phero__grid">
@@ -254,12 +273,7 @@ def solution_page(s, i):
   </div>
 </section>
 
-<section class="section">
-  <div class="wrap bigcase" data-reveal>
-    <div class="bigcase__m"><div class="case__co"><img src="{c['img']}" alt=""><div><b>{c['co']}</b><small>{c['seg']}</small></div></div><div class="case__m"><b>{c['metric']}</b><span>{c['metric_l']}</span></div></div>
-    <div class="bigcase__q"><div class="stars"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></div><q>{c['q']}</q><p class="bigcase__who">{c['who']}, {c['co']}</p><a class="link" href="/#cases">Все клиенты <svg><use href="#i-arrow"/></svg></a></div>
-  </div>
-</section>
+{case_html}
 
 <section class="section section--soft" id="faq">
   <div class="wrap faq">
@@ -285,14 +299,14 @@ def solutions_index():
     <nav class="crumbs" aria-label="Хлебные крошки"><a href="/">Главная</a><span>/</span><b>Решения</b></nav>
     <p class="eyebrow">Решения</p>
     <h1>Готовые решения Yume для ваших бизнес-задач</h1>
-    <p class="lead">Одна платформа, пять специализированных решений. Выберите свой формат и управляйте процессами без путаницы и Excel-таблиц.</p>
+    <p class="lead">Одна платформа, {len(SEGMENTS)} готовых решений под разные виды проката. Выберите свой формат и управляйте процессами без путаницы и Excel-таблиц.</p>
   </div>
 </section>
 <section class="section section--soft" style="padding-top:0">
   <div class="wrap sols">{cards}
     <div class="sol sol--fleet" data-reveal>
       <div class="sol__txt"><span class="seg__icon"><svg><use href="#i-car"/></svg></span><h3>Сдаёте транспорт?</h3><p>Для таксопарков и аренды авто есть отдельный продукт Yume Fleet: водители, оплаты через Kaspi Pay, штрафы ПДД и онлайн-договоры.</p><a class="link" href="https://yume-cloud.github.io/yumefleetlanding/" rel="noopener">Перейти на Yume Fleet <svg><use href="#i-arrow"/></svg></a></div>
-      <div class="sol__txt"><h3 style="font-size:17px">Другой вид проката?</h3><p>Yume настраивается под любую номенклатуру: детские товары, туристическое снаряжение, медтехника, игровые приставки. Если вы что-то сдаёте в аренду, система подойдёт.</p><a class="btn btn--light" href="#demo">Рассказать о своём прокате <svg><use href="#i-arrow"/></svg></a></div>
+      <div class="sol__txt"><h3 style="font-size:17px">Другой вид проката?</h3><p>Yume настраивается под любую номенклатуру: от велосипедов и лодок до сценического света. Если вы что-то сдаёте в аренду, система подойдёт.</p><a class="btn btn--light" href="#demo">Рассказать о своём прокате <svg><use href="#i-arrow"/></svg></a></div>
     </div>
   </div>
 </section>
@@ -530,9 +544,9 @@ def redirect_pages():
     write('/.nojekyll', '')
 
 def service_files():
-    pages = ['/', '/solutions/', '/check/', '/contacts/', '/download/', '/legal/', '/legal/privacy/', '/delete-account/'] + [f'/solutions/{s["slug"]}/' for s in SEGMENTS]
+    pages = ['/', '/solutions/', '/features/', '/check/', '/contacts/', '/download/', '/legal/', '/legal/privacy/', '/delete-account/'] + [f'/solutions/{s["slug"]}/' for s in SEGMENTS] + [f'/features/{f["slug"]}/' for f in FEATURES]
     today = __import__('datetime').date.today().isoformat()
-    urls = ''.join(f'  <url><loc>https://www.yume.cloud{p}</loc><lastmod>{today}</lastmod><changefreq>{"weekly" if p in ("/", "/solutions/") else "monthly"}</changefreq><priority>{"1.0" if p == "/" else "0.8" if p.startswith("/solutions") or p == "/check/" else "0.5"}</priority></url>\n' for p in pages)
+    urls = ''.join(f'  <url><loc>https://www.yume.cloud{p}</loc><lastmod>{today}</lastmod><changefreq>{"weekly" if p in ("/", "/solutions/") else "monthly"}</changefreq><priority>{"1.0" if p == "/" else "0.8" if p.startswith("/solutions") or p.startswith("/features") or p == "/check/" else "0.5"}</priority></url>\n' for p in pages)
     write('/sitemap.xml', f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
     write('/robots.txt', 'User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: https://www.yume.cloud/sitemap.xml\n')
     body = """
@@ -550,9 +564,122 @@ def service_files():
 </section>"""
     write('/404.html', page('Страница не найдена — Yume', 'Страница не найдена.', '/404.html', body))
 
+
+# ------------------------------------------------------------------ возможности
+ALL_FEATURE_LINKS = [dict(slug=f['slug'], icon=f['icon'], name=f['name'], sub=f['sub'], href=f'/features/{f["slug"]}/') for f in FEATURES] + FEATURE_LINKS
+
+def feature_page(f):
+    others = [o for o in ALL_FEATURE_LINKS if o['slug'] != f['slug']]
+    feats = ''.join(f'<div class="feature-c" data-reveal><svg><use href="#{i}"/></svg><h3>{t}</h3><p>{d}</p></div>' for i, t, d in f['feats'])
+    steps = ''.join(f'<li><div><h3>{t}</h3><p>{d}</p></div></li>' for t, d in f['steps'])
+    faq = ''.join(f'<div class="q{" is-open" if k == 0 else ""}"><button>{q}<i></i></button><div class="q__a"><div><p>{a}</p></div></div></div>' for k, (q, a) in enumerate(f['faq']))
+    other_links = ''.join(f'<a class="chip" href="{o["href"]}"><svg><use href="#{o["icon"]}"/></svg>{o["name"]}</a>' for o in others)
+    segs = ''.join(f'<a class="chip" href="/solutions/{s["slug"]}/"><svg><use href="#{s["icon"]}"/></svg>{s["short"]}</a>' for s in SEGMENTS)
+    body = f"""
+<section class="phero">
+  <div class="wrap phero__grid">
+    <div>
+      <nav class="crumbs" aria-label="Хлебные крошки"><a href="/">Главная</a><span>/</span><a href="/features/">Возможности</a><span>/</span><b>{f['name']}</b></nav>
+      <p class="eyebrow"><svg class="eyebrow__i"><use href="#{f['icon']}"/></svg>{f['name']}</p>
+      <h1>{f['h1']}</h1>
+      <p class="lead">{f['lead']}</p>
+      <div class="hero__ctas" style="justify-content:flex-start;opacity:1;animation:none">
+        <a class="btn btn--lg" href="https://account.yume.cloud/auth/register">Попробовать бесплатно <svg><use href="#i-arrow"/></svg></a>
+        <a class="btn btn--lg btn--ghost" href="#demo">Записаться на демо</a>
+      </div>
+      <div class="hero__trust" style="justify-content:flex-start;opacity:1;animation:none;color:var(--muted)">
+        <span><svg><use href="#i-check"/></svg> Без карты</span><span><svg><use href="#i-check"/></svg> 14 дней бесплатно</span><span><svg><use href="#i-check"/></svg> Настройка за 1 день</span>
+      </div>
+    </div>
+    <div class="phero__vis phero__vis--shot" data-reveal="scale"><img src="{f['img']}" alt="Скриншот Yume: {f['name']}" fetchpriority="high"></div>
+  </div>
+</section>
+
+<section class="section section--soft">
+  <div class="wrap">
+    <div class="sec-head">
+      <div data-reveal><p class="eyebrow">Что умеет</p><h2>{f['name']}: возможности модуля</h2></div>
+      <p class="lead" data-reveal style="--d:.1s">Рассказываем, что именно платформа забирает на себя в этом разделе.</p>
+    </div>
+    <div class="feature-grid">{feats}</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap start">
+    <div data-reveal="left">
+      <p class="eyebrow">Как это работает</p>
+      <h2>Три шага, и модуль работает на вас</h2>
+      <ul class="start__steps" style="margin-top:24px">{steps}</ul>
+    </div>
+    <div class="start__visual start__visual--shot" data-reveal="scale"><img src="{f['img']}" alt="" loading="lazy"></div>
+  </div>
+</section>
+
+<section class="section section--soft">
+  <div class="wrap">
+    <div class="sec-head"><div data-reveal><p class="eyebrow">Для кого</p><h2>Работает во всех решениях Yume</h2></div><p class="lead" data-reveal style="--d:.1s">Модуль входит в готовые решения для каждого вида проката.</p></div>
+    <div class="others others--wide" data-reveal>{segs}</div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="wrap faq">
+    <div data-reveal="left"><p class="eyebrow">Вопросы</p><h2>Частые вопросы</h2><p class="lead" style="margin-top:18px">Остальные ответы на <a class="link" href="/#faq">главной</a> или в WhatsApp.</p>
+      <div class="others"><small>Другие возможности</small>{other_links}</div></div>
+    <div class="faq__list" data-reveal="right">{faq}</div>
+  </div>
+</section>
+""" + cta_block('Запишитесь на демо-звонок, мы поможем начать. Бесплатно', f'Наш специалист покажет, как работает модуль «{f["name"]}» на примере вашего проката. 20 минут по видеосвязи.',
+                 ['Мгновенное подключение: быстрый старт без лишних сложностей', 'Персональный менеджер: поддержка на всех этапах', 'Безопасность данных: хранение в Казахстане'])
+    write(f'/features/{f["slug"]}/index.html', page(f'{f["name"]} — Yume', f['lead'], f'/features/{f["slug"]}/', body))
+
+def features_index():
+    cards = ''.join(f"""<a class="fcard" href="{o['href']}" data-reveal>
+  <div class="fcard__vis"><img src="{next((x['img'] for x in FEATURES if x['slug']==o['slug']), '/assets/img/phone.webp')}" alt="" loading="lazy"></div>
+  <div class="fcard__txt"><span class="seg__icon"><svg><use href="#{o['icon']}"/></svg></span><h3>{o['name']}</h3><p>{next((x['lead'] for x in FEATURES if x['slug']==o['slug']), o['sub'])}</p><span class="link">Подробнее <svg><use href="#i-arrow"/></svg></span></div>
+</a>""" for o in ALL_FEATURE_LINKS)
+    body = f"""
+<section class="phero phero--center">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Хлебные крошки"><a href="/">Главная</a><span>/</span><b>Возможности</b></nav>
+    <p class="eyebrow">Возможности</p>
+    <h1>Возможности Yume для вашего бизнеса</h1>
+    <p class="lead">Аренды, каталог, договоры с eGov-подписью, финансы, клиенты, аналитика, мастерская, доставка и ИИ-ассистент. Подключайте модули под свои задачи.</p>
+  </div>
+</section>
+<section class="section section--soft" style="padding-top:0">
+  <div class="wrap fgrid">{cards}</div>
+</section>
+""" + cta_block('Запишитесь на демо-звонок, мы поможем начать. Бесплатно', 'Наш специалист за 20 минут покажет, как модули работают вместе на примере вашего проката.',
+                 ['Мгновенное подключение: быстрый старт без лишних сложностей', 'Персональный менеджер: поддержка на всех этапах', 'Безопасность данных: хранение в Казахстане'])
+    write('/features/index.html', page('Возможности платформы — Yume', 'Все модули Yume: управление арендой, каталог, подписание через eGov и SMS, финансы, клиенты, аналитика, мастерская, доставка, ИИ-ассистент.', '/features/', body))
+
+# ------------------------------------------------------------------ главная: меню и сетка сегментов
+def inject_index():
+    global idx, HEADER
+    dd_sol = ''.join(f'<a class="dd__i" href="/solutions/{s["slug"]}/"><svg><use href="#{s["icon"]}"/></svg><div><b>{s["short"]}</b><small>{s["name"]}</small></div></a>' for s in SEGMENTS)
+    dd_sol = f'<div class="dd"><div class="dd__panel"><div class="dd__grid">{dd_sol}</div><a class="dd__all" href="/solutions/">Все решения <svg><use href="#i-arrow"/></svg></a></div></div>'
+    dd_feat = ''.join(f'<a class="dd__i" href="{o["href"]}"><svg><use href="#{o["icon"]}"/></svg><div><b>{o["name"]}</b><small>{o["sub"]}</small></div></a>' for o in ALL_FEATURE_LINKS)
+    dd_feat = f'<div class="dd"><div class="dd__panel"><div class="dd__grid">{dd_feat}</div><a class="dd__all" href="/features/">Все возможности <svg><use href="#i-arrow"/></svg></a></div></div>'
+    segs = ''.join(f'<a class="seg" href="/solutions/{s["slug"]}/"><span class="seg__icon"><svg><use href="#{s["icon"]}"/></svg></span><h3>{s["name"]}</h3><p>{s["card"]}</p><span class="link">Подробнее <svg><use href="#i-arrow"/></svg></span></a>\n      ' for s in SEGMENTS[:7])
+    segs += f'<a class="seg seg--more" href="/solutions/"><span class="seg__icon"><svg><use href="#i-box"/></svg></span><h3>Ещё {len(SEGMENTS)-7} решений</h3><p>Приставки и VR, IT-техника для бизнеса и другие виды проката. Все {len(SEGMENTS)} готовых решений на одной странице.</p><span class="link">Все решения <svg><use href="#i-arrow"/></svg></span></a>\n      '
+    new = idx
+    new = re.sub(r'<!-- dd:solutions -->.*?<!-- /dd -->', '<!-- dd:solutions -->' + dd_sol + '<!-- /dd -->', new, flags=re.S)
+    new = re.sub(r'<!-- dd:features -->.*?<!-- /dd -->', '<!-- dd:features -->' + dd_feat + '<!-- /dd -->', new, flags=re.S)
+    new = re.sub(r'(<!-- segs -->).*?(<!-- /segs -->)', lambda m: m.group(1) + '\n      ' + segs + m.group(2), new, flags=re.S)
+    if new != idx:
+        idx = new
+        write('/index.html', idx)
+        HEADER = part(r'<header class="nav">.*?</header>')
+
+inject_index()
 for i, s in enumerate(SEGMENTS):
     solution_page(s, i)
 solutions_index()
+for f in FEATURES:
+    feature_page(f)
+features_index()
 contacts()
 check_page()
 download_page()

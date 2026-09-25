@@ -15,6 +15,8 @@
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
   $('.nav__burger')?.addEventListener('click', () => nav.classList.toggle('is-open'));
   $$('.nav__menu a').forEach(a => a.addEventListener('click', () => nav.classList.remove('is-open')));
+  $$('.dd__tgl').forEach(b => b.addEventListener('click', e => { e.preventDefault(); const li = b.closest('.has-dd'); const open = li.classList.contains('is-open'); $$('.has-dd.is-open').forEach(x => x.classList.remove('is-open')); if (!open) li.classList.add('is-open'); }));
+  $$('.has-dd > a').forEach(a => a.addEventListener('keydown', e => { if (e.key === 'Escape') a.closest('.has-dd').classList.remove('is-open'); }));
 
   /* ---------- HERO: cursor glow + tilt ---------- */
   if (hero && matchMedia('(pointer:fine)').matches && !reduced) {
