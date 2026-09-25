@@ -62,7 +62,7 @@ def page(title, desc, path, body, light_nav=True):
 {body}
 {FOOTER}
 {FABS}
-<script src="/js/main.js" defer></script>
+<script src="/js/main.js?v=3" defer></script>
 </body>
 </html>
 '''

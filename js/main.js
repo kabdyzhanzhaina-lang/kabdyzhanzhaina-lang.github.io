@@ -116,7 +116,7 @@
   }
 
   /* ---------- AI chat loop ---------- */
-  const chat = $('.chat__log');
+  const chat = $('#ai .chat__log');
   if (chat) {
     const script = [
       { me: true, t: 'Что должны вернуть сегодня и кто уже просрочил?' },
