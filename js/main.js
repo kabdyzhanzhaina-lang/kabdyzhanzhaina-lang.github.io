@@ -182,7 +182,7 @@
     const label = btn.textContent; btn.disabled = true; btn.textContent = 'Отправляем…';
     const payload = { name: name.value.trim(), phone: phone.value.trim(), segment: $('#seg', form)?.value || '', page: location.pathname, source: document.title, website: $('input[name=website]', form)?.value || '' };
     try {
-      const r = await fetch('/api/lead/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      const r = await fetch('https://yume-cloud-zzydfr.vercel.app/api/lead/', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const j = await r.json().catch(() => ({}));
       if (!r.ok || !j.ok) throw new Error(j.error || r.status);
       form.classList.add('is-done');
