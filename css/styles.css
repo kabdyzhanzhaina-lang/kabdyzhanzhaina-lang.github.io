@@ -110,7 +110,7 @@ p{margin:0}
 .hero h1 .hl:has(.w){background:none;color:inherit}
 .nav__menu .nav__cta-m{display:none}
 @keyframes rise{to{transform:translateY(0)}}
-.hero .lead{margin:24px auto 0;color:var(--on-dark-muted);max-width:60ch;opacity:0;animation:fade .8s var(--ease) .6s forwards}
+.hero .lead{margin:24px auto 0;color:var(--on-dark-muted);max-width:74ch;text-wrap:balance;opacity:0;animation:fade .8s var(--ease) .6s forwards}
 .hero__ctas{display:flex;gap:12px;justify-content:center;margin-top:36px;opacity:0;animation:fade .8s var(--ease) .8s forwards;flex-wrap:wrap}
 .hero__trust{display:flex;gap:22px;justify-content:center;margin-top:22px;font-size:14px;color:var(--on-dark-muted);flex-wrap:wrap;opacity:0;animation:fade .8s var(--ease) 1s forwards}
 .hero__trust span{display:inline-flex;align-items:center;gap:7px}
