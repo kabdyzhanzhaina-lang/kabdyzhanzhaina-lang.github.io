@@ -230,8 +230,8 @@ def solution_page(s, i):
 <section class="section section--soft">
   <div class="wrap">
     <div class="sec-head">
-      <div data-reveal><p class="eyebrow">Как это обычно бывает</p><h2>Четыре проблемы, с которыми приходят к нам прокаты</h2></div>
-      <p class="lead" data-reveal style="--d:.1s">Если узнали хотя бы две, дальше будет полезно.</p>
+      <div data-reveal><p class="eyebrow">Проблема</p><h2>Что мешает прокату расти без системы</h2></div>
+      <p class="lead" data-reveal style="--d:.1s">Знакомые ситуации, которые съедают время и деньги каждый день.</p>
     </div>
     <ul class="pains" data-stagger>{pains}</ul>
   </div>
@@ -239,7 +239,7 @@ def solution_page(s, i):
 
 <section class="section">
   <div class="wrap">
-    <div class="sec-head sec-head--center" data-reveal><div><p class="eyebrow">Что меняется с Yume</p><h2>Так выглядит тот же прокат через неделю</h2></div></div>
+    <div class="sec-head sec-head--center" data-reveal><div><p class="eyebrow">Решение</p><h2>Yume объединяет весь прокат в одной системе</h2></div></div>
     <div class="gains">{gains}</div>
   </div>
 </section>
@@ -247,8 +247,8 @@ def solution_page(s, i):
 <section class="section section--soft">
   <div class="wrap">
     <div class="sec-head">
-      <div data-reveal><p class="eyebrow">Модули</p><h2>Что включаем для этого сегмента</h2></div>
-      <p class="lead" data-reveal style="--d:.1s">Остальные модули подключаются позже, когда понадобятся. Платите только за то, что используете.</p>
+      <div data-reveal><p class="eyebrow">Ключевые модули</p><h2>Модули для вашего проката</h2></div>
+      <p class="lead" data-reveal style="--d:.1s">Все необходимые инструменты в одной системе. Остальные модули подключаются по мере роста.</p>
     </div>
     <div class="mods" data-stagger>{mods}</div>
   </div>
@@ -263,13 +263,13 @@ def solution_page(s, i):
 
 <section class="section section--soft" id="faq">
   <div class="wrap faq">
-    <div data-reveal="left"><p class="eyebrow">Вопросы</p><h2>Частые вопросы про {s['short'].lower()}</h2><p class="lead" style="margin-top:18px">Остальные ответы на <a class="link" href="/#faq">главной</a> или в WhatsApp.</p>
+    <div data-reveal="left"><p class="eyebrow">Вопросы</p><h2>Ответы на вопросы про {s['short'].lower()}</h2><p class="lead" style="margin-top:18px">Остальные ответы на <a class="link" href="/#faq">главной</a> или в WhatsApp.</p>
       <div class="others"><small>Другие сегменты</small>{other_links}</div></div>
     <div class="faq__list" data-reveal="right">{faq}</div>
   </div>
 </section>
-''' + cta_block(f'Покажем Yume на примере вашего проката', '20 минут по видеосвязи. Разберём ваш каталог и сценарий выдачи, ответим на вопросы про переезд из таблиц.',
-                 ['Перезвоним в течение 15 минут в рабочее время', 'Персональный менеджер на всё время внедрения', 'Данные хранятся в Казахстане'])
+''' + cta_block('Запишитесь на демо-звонок, мы поможем начать. Бесплатно', 'Наш специалист покажет, как платформа решает задачи вашего проката. 20 минут по видеосвязи.',
+                 ['Мгновенное подключение: быстрый старт без лишних сложностей', 'Персональный менеджер: поддержка на всех этапах', 'Безопасность данных: хранение в Казахстане'])
     write(f'/solutions/{s["slug"]}/index.html', page(f'{s["name"]} — Yume', s['lead'], f'/solutions/{s["slug"]}/', body))
 
 def solutions_index():
@@ -284,20 +284,20 @@ def solutions_index():
   <div class="wrap">
     <nav class="crumbs" aria-label="Хлебные крошки"><a href="/">Главная</a><span>/</span><b>Решения</b></nav>
     <p class="eyebrow">Решения</p>
-    <h1>Один продукт, пять готовых сценариев проката</h1>
-    <p class="lead">Каталог, шаблоны договоров и логика выдачи уже настроены под сегмент. Выберите свой, а если такого нет, соберём под вас.</p>
+    <h1>Готовые решения Yume для ваших бизнес-задач</h1>
+    <p class="lead">Одна платформа, пять специализированных решений. Выберите свой формат и управляйте процессами без путаницы и Excel-таблиц.</p>
   </div>
 </section>
 <section class="section section--soft" style="padding-top:0">
   <div class="wrap sols">{cards}
     <div class="sol sol--fleet" data-reveal>
-      <div class="sol__txt"><span class="seg__icon"><svg><use href="#i-car"/></svg></span><h3>Сдаёте транспорт?</h3><p>Таксопарки, автопрокат, грузовые и спецтехника живут в отдельном продукте со своим аккаунтом: водители, штрафы ПДД, GPS и Kaspi Pay.</p><a class="link" href="https://yume.fleet" rel="noopener">Перейти на yume.fleet <svg><use href="#i-arrow"/></svg></a></div>
-      <div class="sol__txt"><h3 style="font-size:17px">Другой вид проката?</h3><p>Детские товары, туристическое снаряжение, медтехника, игровые приставки. Расскажите, что сдаёте, и мы покажем, как это ляжет в Yume.</p><a class="btn btn--light" href="#demo">Рассказать о своём прокате <svg><use href="#i-arrow"/></svg></a></div>
+      <div class="sol__txt"><span class="seg__icon"><svg><use href="#i-car"/></svg></span><h3>Сдаёте транспорт?</h3><p>Для таксопарков и аренды авто есть отдельный продукт Yume Fleet: водители, оплаты через Kaspi Pay, штрафы ПДД и онлайн-договоры.</p><a class="link" href="https://yume-cloud.github.io/yumefleetlanding/" rel="noopener">Перейти на Yume Fleet <svg><use href="#i-arrow"/></svg></a></div>
+      <div class="sol__txt"><h3 style="font-size:17px">Другой вид проката?</h3><p>Yume настраивается под любую номенклатуру: детские товары, туристическое снаряжение, медтехника, игровые приставки. Если вы что-то сдаёте в аренду, система подойдёт.</p><a class="btn btn--light" href="#demo">Рассказать о своём прокате <svg><use href="#i-arrow"/></svg></a></div>
     </div>
   </div>
 </section>
-''' + cta_block('Не нашли свой сегмент? Покажем на вашем примере', 'Расскажите, что сдаёте в аренду, и за 20 минут по видеосвязи мы соберём каталог и сценарий выдачи под вас.',
-                 ['Перезвоним в течение 15 минут в рабочее время', 'Настроим каталог вместе с вами', 'Данные хранятся в Казахстане'])
+''' + cta_block('Не нашли свой сегмент? Покажем на вашем примере', 'Расскажите, что сдаёте в аренду, и за 20 минут по видеосвязи мы покажем, как платформа решает ваши задачи.',
+                 ['Мгновенное подключение: быстрый старт без лишних сложностей', 'Персональный менеджер: поддержка на всех этапах', 'Безопасность данных: хранение в Казахстане'])
     write('/solutions/index.html', page('Решения для проката — Yume', 'Готовые сценарии Yume для проката инструмента, ивент-инвентаря, спорта, одежды и техники.', '/solutions/', body))
 
 def contacts():
@@ -306,8 +306,8 @@ def contacts():
   <div class="wrap">
     <nav class="crumbs" aria-label="Хлебные крошки"><a href="/">Главная</a><span>/</span><b>Контакты</b></nav>
     <p class="eyebrow">Контакты</p>
-    <h1>Отвечаем за 15 минут в рабочее время</h1>
-    <p class="lead">Быстрее всего в WhatsApp. Для договоров, интеграций и партнёрства пишите на почту, ответим в тот же день.</p>
+    <h1>Свяжитесь с нами</h1>
+    <p class="lead">Отвечаем в течение 15 минут в рабочее время. Быстрее всего в WhatsApp. Для договоров, интеграций и партнёрства пишите на почту.</p>
   </div>
 </section>
 <section class="section" style="padding-top:0">
@@ -322,7 +322,7 @@ def contacts():
     </div>
     <div class="contacts__form" data-reveal="right">
       <h2 style="font-size:26px;margin-bottom:8px">Оставьте заявку</h2>
-      <p class="lead" style="font-size:15px;margin-bottom:22px">Перезвоним в течение 15 минут в рабочее время или напишем в WhatsApp.</p>
+      <p class="lead" style="font-size:15px;margin-bottom:22px">Оставьте заявку на живую демонстрацию платформы. Перезвоним в течение 15 минут в рабочее время.</p>
       ''' + FORM.replace('data-reveal="right"', '') + '''
     </div>
   </div>
@@ -331,7 +331,7 @@ def contacts():
   <div class="wrap">
     <div class="sec-head"><div data-reveal><p class="eyebrow">Полезное</p><h2>Пока ждёте ответа</h2></div></div>
     <div class="quick" data-stagger>
-      <a class="quick__i" href="https://account.yume.cloud/auth/register"><h3>Начать без звонка</h3><p>Регистрация занимает две минуты, первые 14 дней бесплатно и без карты.</p><span class="link">Создать аккаунт <svg><use href="#i-arrow"/></svg></span></a>
+      <a class="quick__i" href="https://account.yume.cloud/auth/register"><h3>Создать аккаунт</h3><p>Регистрация занимает две минуты. Мгновенное подключение без звонка менеджера.</p><span class="link">Создать аккаунт <svg><use href="#i-arrow"/></svg></span></a>
       <a class="quick__i" href="/solutions/"><h3>Посмотреть своё решение</h3><p>Инструмент, ивент, спорт, одежда, техника. Что именно меняется в каждом сегменте.</p><span class="link">К решениям <svg><use href="#i-arrow"/></svg></span></a>
       <a class="quick__i" href="/#faq"><h3>Частые вопросы</h3><p>Перенос из Excel, договоры, права доступа, работа с телефона.</p><span class="link">Читать ответы <svg><use href="#i-arrow"/></svg></span></a>
       <a class="quick__i" href="/download/"><h3>Скачать приложение</h3><p>iOS и Android для точки проката, macOS и Windows для офиса.</p><span class="link">Скачать <svg><use href="#i-arrow"/></svg></span></a>
@@ -370,8 +370,8 @@ def check_page():
   <div class="wrap">
     <nav class="crumbs" aria-label="Хлебные крошки"><a href="/">Главная</a><span>/</span><b>Проверка клиентов</b></nav>
     <p class="eyebrow">Проверка клиентов</p>
-    <h1>Проверьте клиента за секунду</h1>
-    <p class="lead">Чёрный список прокатчиков Казахстана и реестр должников АИС ОИП по ИИН, ФИО или номеру телефона. Бесплатно и без регистрации.</p>
+    <h1>Проверка клиентов за секунды</h1>
+    <p class="lead">Чёрный список и реестр должников АИС ОИП: моментальная проверка по ИИН, ФИО или номеру телефона. Защитите бизнес от недобросовестных клиентов.</p>
     <div class="cw" data-check style="width:100%;margin-top:32px">
       <div class="cw__bar">
         <input type="search" inputmode="search" autocomplete="off" placeholder="ИИН, ФИО или номер телефона" aria-label="ИИН, ФИО или номер телефона">
@@ -423,8 +423,8 @@ def check_page():
     <div class="faq__list" data-reveal="right">{fq}</div>
   </div>
 </section>
-''' + cta_block('Покажем проверку на реальном примере', '20 минут по видеосвязи. Проверим пару ИИН из вашей базы и покажем, как реестр встраивается в выдачу.',
-                 ['Перезвоним в течение 15 минут в рабочее время', 'Проверка работает с первого дня, без настройки', 'Данные хранятся в Казахстане']) + '\n<script src="/js/check.js" defer></script>'
+''' + cta_block('Запишитесь на демо-звонок, мы поможем начать. Бесплатно', 'Наш специалист покажет, как проверка клиентов встроена в оформление аренды. 20 минут по видеосвязи.',
+                 ['Мгновенное подключение: проверка работает с первого дня', 'Персональный менеджер: поддержка на всех этапах', 'Безопасность данных: хранение в Казахстане']) + '\n<script src="/js/check.js" defer></script>'
     write('/check/index.html', page('Проверка клиентов по ИИН — Yume', 'Реестр должников АИС ОИП, eGov и чёрный список прокатчиков. Проверка клиента за секунду перед выдачей инвентаря.', '/check/', body))
 
 def download_page():
@@ -434,8 +434,8 @@ def download_page():
     <div>
       <nav class="crumbs" aria-label="Хлебные крошки"><a href="/">Главная</a><span>/</span><b>Скачать</b></nav>
       <p class="eyebrow">Приложения</p>
-      <h1>Yume на телефоне, планшете и компьютере</h1>
-      <p class="lead">Выдача и возврат с телефона на точке, отчёты и аналитика на компьютере в офисе. Один аккаунт, данные синхронизируются мгновенно.</p>
+      <h1>Работайте с бизнесом на ходу через приложение Yume</h1>
+      <p class="lead">Контролируйте аренды, клиентов, оплаты, долги и аналитику прямо с телефона. Для владельцев, менеджеров и сотрудников, которые хотят управлять процессами быстрее.</p>
       <div class="stores" data-stagger>
         <a class="store" href="https://apps.apple.com/kz/app/yume-cloud/id6749707587" rel="noopener"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M16.4 12.6c0-2.5 2-3.7 2.1-3.8-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.8 1.3 10.3.9 1.3 1.9 2.7 3.3 2.6 1.3-.1 1.8-.8 3.4-.8s2 .8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.2zM14 5.2c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z"/></svg><div><small>Скачать в</small><b>App Store</b></div></a>
         <a class="store" href="https://play.google.com/store/search?q=yume%20cloud&c=apps" rel="noopener"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M3.6 2.3 13 12l-9.4 9.7c-.3-.2-.6-.6-.6-1.1V3.4c0-.5.3-.9.6-1.1zm11 8.2L5.3 2.1 16.8 8.7l-2.2 1.8zm0 3 2.2 1.8L5.3 21.9l9.3-8.4zm5.6-3.1c.6.4 1 .9 1 1.6s-.4 1.2-1 1.6l-2.6 1.5L15 12l2.6-3.1 2.6 1.5z"/></svg><div><small>Скачать в</small><b>Google Play</b></div></a>
@@ -459,8 +459,8 @@ def download_page():
     </div>
   </div>
 </section>
-''' + cta_block('Поможем установить и настроить', 'Если у вас несколько точек или сезонная команда, покажем, как раздать доступы и обучить сотрудников за час.',
-                 ['Перезвоним в течение 15 минут в рабочее время', 'Настроим роли и права для команды', 'Пришлём установочные файлы для компьютера'])
+''' + cta_block('Поможем установить и настроить', 'Покажем, как раздать доступы команде и работать с нескольких точек. 20 минут по видеосвязи.',
+                 ['Мгновенное подключение: быстрый старт без лишних сложностей', 'Персональный менеджер: поддержка на всех этапах', 'Пришлём установочные файлы для компьютера'])
     write('/download/index.html', page('Скачать приложение Yume для iOS, Android, macOS и Windows', 'Управляйте прокатом с телефона и компьютера. Приложение Yume для iOS и Android, веб-версия и десктоп для macOS и Windows.', '/download/', body))
 
 
