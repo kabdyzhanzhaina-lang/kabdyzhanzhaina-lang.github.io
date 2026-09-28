@@ -359,9 +359,6 @@ ANALYTICS = re.search(r'<script async src="https://www.googletagmanager.com.*?</
 ANALYTICS = ANALYTICS.group(0) if ANALYTICS else ''
 
 def check_page():
-    demo = part(r'<div class="demo" data-reveal="right">.*?</div>\n    </div>\n  </div>\n</section>')
-    demo = demo[:demo.rfind('\n    </div>\n  </div>\n</section>')]
-    demo = demo.replace('data-reveal="right"', 'data-reveal="scale"')
     feats = [('i-shield', 'АИС ОИП и eGov', 'Проверка по реестру должников исполнительных производств и данным eGov при каждой новой аренде.'),
              ('i-scan', 'Мгновенный результат', 'Проверка запускается автоматически при создании аренды. Без задержек и ручного поиска по базам.'),
              ('i-alert', 'Чёрный список', 'Ведите собственный список с причинами и заметками. Он виден всем сотрудникам вашего проката.'),
