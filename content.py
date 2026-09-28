@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Дополнительный контент: новые сегменты и страницы возможностей. Импортируется в build.py."""
 
-IMG = dict(cal='/assets/img/icon-calendar.webp', table='/assets/img/app-table.webp', contract='/assets/img/icon-contract.webp',
-           finance='/assets/img/icon-finance.webp', inv='/assets/img/inventory-illustration.webp', devices='/assets/img/icon-devices.webp',
-           modules='/assets/img/icon-modules.webp')
+IMG = dict(cal='/assets/img/gen/D1.webp', table='/assets/img/gen/E1.webp', contract='/assets/img/gen/D3.webp',
+           finance='/assets/img/gen/D4.webp', inv='/assets/img/gen/D2.webp', devices='/assets/img/gen/D6.webp',
+           modules='/assets/img/gen/D5.webp')
 
 # Тексты карточек на главной и в выпадающем меню для существующих сегментов
 CARDS = {
