@@ -669,8 +669,9 @@ def feature_page(f):
     write(f'/features/{f["slug"]}/index.html', page(f'{f["name"]} — Yume', f['lead'], f'/features/{f["slug"]}/', body))
 
 def features_index():
+    GIMG = {'rentals': 'G1', 'catalog': 'G2', 'signing': 'G3', 'finance': 'G4', 'clients': 'G5', 'analytics': 'G6', 'workshop': 'G7', 'delivery': 'G8', 'ai': 'G9', 'check': 'G10', 'app': 'G11'}
     cards = ''.join(f"""<a class="fcard" href="{o['href']}" data-reveal>
-  <span class="fcard__i"><svg><use href="#{o['icon']}"/></svg></span>
+  <div class="fcard__vis"><img src="/assets/img/gen/{GIMG[o['slug']]}.webp" width="1536" height="1024" alt="{o['name']}" loading="lazy"></div>
   <div class="fcard__txt"><h3>{o['name']}</h3><p>{next((x['lead'] for x in FEATURES if x['slug']==o['slug']), o['sub'])}</p><span class="link">Подробнее <svg><use href="#i-arrow"/></svg></span></div>
 </a>""" for o in ALL_FEATURE_LINKS)
     body = f"""
