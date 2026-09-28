@@ -765,7 +765,7 @@ def cases_page():
     <p class="lead">Шесть компаний, их задачи до перехода и что изменилось после. Цитаты владельцев без правок.</p>
   </div>
 </section>
-<section class="section section--soft" style="padding-top:0"><div class="wrap kases">{cards}</div></section>
+<section class="section" style="padding-top:0"><div class="wrap kases">{cards}</div></section>
 """ + cta_block('Хотите такой же результат? Покажем на вашем примере', 'Расскажите, что сдаёте в аренду, и за 20 минут по видеосвязи мы покажем, как платформа решает ваши задачи.',
                  ['Мгновенное подключение: быстрый старт без лишних сложностей', 'Персональный менеджер: поддержка на всех этапах', 'Безопасность данных: хранение в Казахстане'])
     write('/cases/index.html', page('Кейсы клиентов — Yume', 'ProRent, StroyПрокат, Prokat Invest, ToRent, Tobe.kz, PostRental: как прокаты перешли на Yume и что изменилось.', '/cases/', body))
