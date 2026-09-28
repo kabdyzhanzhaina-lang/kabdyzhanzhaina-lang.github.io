@@ -338,7 +338,7 @@ def solutions_index():
     <p class="lead">Одна платформа, {len(SEGMENTS)} готовых решений под разные виды проката. Выберите свой формат и управляйте процессами без путаницы и Excel-таблиц.</p>
   </div>
 </section>
-<section class="section section--soft" style="padding-top:0">
+<section class="section" style="padding-top:0">
   <div class="wrap sols">{cards}
     <div class="sol sol--fleet" data-reveal>
       <div class="sol__txt"><span class="seg__icon"><svg><use href="#i-car"/></svg></span><h3>Сдаёте транспорт?</h3><p>Для таксопарков и аренды авто есть отдельный продукт Yume Fleet: водители, оплаты через Kaspi Pay, штрафы ПДД и онлайн-договоры.</p><a class="link" href="https://yume-cloud.github.io/yumefleetlanding/" rel="noopener">Перейти на Yume Fleet <svg><use href="#i-arrow"/></svg></a></div>
