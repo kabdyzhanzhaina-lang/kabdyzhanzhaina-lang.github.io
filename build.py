@@ -399,7 +399,6 @@ ANALYTICS = ANALYTICS.group(0) if ANALYTICS else ''
 
 def check_page():
     feats = [('i-shield', 'АИС ОИП и eGov', 'Проверка по реестру должников исполнительных производств и данным eGov при каждой новой аренде.'),
-             ('i-scan', 'Мгновенный результат', 'Проверка запускается автоматически при создании аренды. Без задержек и ручного поиска по базам.'),
              ('i-alert', 'Чёрный список', 'Ведите собственный список с причинами и заметками. Он виден всем сотрудникам вашего проката.'),
              ('i-box', 'Общий реестр прокатчиков', 'Должники, которых добавили другие прокаты на Yume. Больше 200 компаний пополняют его каждый день.')]
     fh = ''.join(f'<div class="feature-c" data-reveal><svg><use href="#{i}"/></svg><h3>{t}</h3><p>{d}</p></div>' for i, t, d in feats)
@@ -671,8 +670,8 @@ def feature_page(f):
 
 def features_index():
     cards = ''.join(f"""<a class="fcard" href="{o['href']}" data-reveal>
-  <div class="fcard__vis"><img src="{next((x['img'] for x in FEATURES if x['slug']==o['slug']), '/assets/img/phone.webp')}" alt="" loading="lazy"></div>
-  <div class="fcard__txt"><span class="seg__icon"><svg><use href="#{o['icon']}"/></svg></span><h3>{o['name']}</h3><p>{next((x['lead'] for x in FEATURES if x['slug']==o['slug']), o['sub'])}</p><span class="link">Подробнее <svg><use href="#i-arrow"/></svg></span></div>
+  <span class="fcard__i"><svg><use href="#{o['icon']}"/></svg></span>
+  <div class="fcard__txt"><h3>{o['name']}</h3><p>{next((x['lead'] for x in FEATURES if x['slug']==o['slug']), o['sub'])}</p><span class="link">Подробнее <svg><use href="#i-arrow"/></svg></span></div>
 </a>""" for o in ALL_FEATURE_LINKS)
     body = f"""
 <section class="phero phero--center">
@@ -683,7 +682,7 @@ def features_index():
     <p class="lead">Аренды, каталог, договоры с eGov-подписью, финансы, клиенты, аналитика, мастерская, доставка и ИИ-ассистент. Подключайте модули под свои задачи.</p>
   </div>
 </section>
-<section class="section section--soft" style="padding-top:0">
+<section class="section" style="padding-top:0">
   <div class="wrap fgrid">{cards}</div>
 </section>
 """ + cta_block('Запишитесь на демо-звонок, мы поможем начать. Бесплатно', 'Наш специалист за 20 минут покажет, как модули работают вместе на примере вашего проката.',
@@ -733,7 +732,7 @@ def integrations_page():
     <p class="lead">Kaspi, eGov, реестр должников, WhatsApp, SMS, телефония и Excel. Подключаются в разделе «Маркет» за несколько минут без программистов.</p>
   </div>
 </section>
-<section class="section section--soft" style="padding-top:0"><div class="wrap">{groups}</div></section>
+<section class="section" style="padding-top:0"><div class="wrap">{groups}</div></section>
 <section class="section"><div class="wrap">
   <div class="sec-head"><div data-reveal><p class="eyebrow">Как подключить</p><h2>Три шага в разделе «Маркет»</h2></div><p class="lead" data-reveal style="--d:.1s">Интеграции включаются внутри системы, а не через поддержку.</p></div>
   <div class="flow flow--3">
