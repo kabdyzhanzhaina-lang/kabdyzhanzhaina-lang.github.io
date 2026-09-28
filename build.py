@@ -694,7 +694,7 @@ def integrations_page():
 <section class="section section--soft" style="padding-top:0"><div class="wrap">{groups}</div></section>
 <section class="section"><div class="wrap">
   <div class="sec-head"><div data-reveal><p class="eyebrow">Как подключить</p><h2>Три шага в разделе «Маркет»</h2></div><p class="lead" data-reveal style="--d:.1s">Интеграции включаются внутри системы, а не через поддержку.</p></div>
-  <div class="flow">
+  <div class="flow flow--3">
     <div class="flow__line"><i></i></div>
     <div class="step" data-reveal><div class="step__n"><svg><use href="#i-store"/></svg></div><small>ШАГ 01</small><h3>Откройте Маркет</h3><p>Каталог модулей и интеграций внутри Yume с поиском и категориями.</p></div>
     <div class="step" data-reveal style="--d:.1s"><div class="step__n"><svg><use href="#i-check"/></svg></div><small>ШАГ 02</small><h3>Подключите нужное</h3><p>Kaspi, Wazzup или телефония: вводите ключи из кабинета сервиса, остальное система делает сама.</p></div>
