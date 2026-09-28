@@ -689,3 +689,7 @@ a.ccard:hover .ccard__arr{transform:translate(3px,-3px);color:var(--accent)}
 .why__i p{color:var(--muted);font-size:15px;flex:1}
 .apps--center{justify-content:center;margin-top:40px}
 @media (max-width:980px){.swap,.why{grid-template-columns:1fr}}
+
+.rev-cap{margin-top:72px;margin-bottom:28px}
+.rev-cap h3{font-size:26px;margin-top:6px}
+@media (max-width:640px){.rev-cap{margin-top:48px}}
