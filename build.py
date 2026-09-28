@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Generates inner pages (solutions, contacts) from index.html partials."""
 import re, os, html
-from content import CARDS, EXTRA_SEGMENTS, FEATURES, FEATURE_LINKS
+from content import CARDS, EXTRA_SEGMENTS, FEATURES, FEATURE_LINKS, INTEGRATIONS, CASES
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 idx = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
@@ -541,7 +541,7 @@ def redirect_pages():
     write('/.nojekyll', '')
 
 def service_files():
-    pages = ['/', '/solutions/', '/features/', '/check/', '/contacts/', '/download/', '/legal/', '/legal/privacy/', '/delete-account/'] + [f'/solutions/{s["slug"]}/' for s in SEGMENTS] + [f'/features/{f["slug"]}/' for f in FEATURES]
+    pages = ['/', '/solutions/', '/features/', '/integrations/', '/cases/', '/check/', '/contacts/', '/download/', '/legal/', '/legal/privacy/', '/delete-account/'] + [f'/solutions/{s["slug"]}/' for s in SEGMENTS] + [f'/features/{f["slug"]}/' for f in FEATURES]
     today = __import__('datetime').date.today().isoformat()
     urls = ''.join(f'  <url><loc>https://www.yume.cloud{p}</loc><lastmod>{today}</lastmod><changefreq>{"weekly" if p in ("/", "/solutions/") else "monthly"}</changefreq><priority>{"1.0" if p == "/" else "0.8" if p.startswith("/solutions") or p.startswith("/features") or p == "/check/" else "0.5"}</priority></url>\n' for p in pages)
     write('/sitemap.xml', f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
@@ -669,6 +669,73 @@ def inject_index():
         idx = new
         write('/index.html', idx)
         HEADER = part(r'<header class="nav">.*?</header>')
+
+# ------------------------------------------------------------------ интеграции и кейсы
+def integrations_page():
+    groups=''
+    for g in INTEGRATIONS:
+        items=''
+        for it in g['items']:
+            ico = f'<img src="{it["logo"]}" alt="" width="42" height="42">' if it.get('logo') else f'<svg><use href="#{it["icon"]}"/></svg>'
+            link = f'<span class="link">Подробнее <svg><use href="#i-arrow"/></svg></span>' if it.get('href') else ''
+            tag='a' if it.get('href') else 'div'
+            href=f' href="{it["href"]}"' + (' rel="noopener"' if it.get('href','').startswith('http') else '') if it.get('href') else ''
+            items+=f'<{tag} class="intg"{href} data-reveal><i class="intg__i">{ico}</i><div><h3>{it["name"]}</h3><small>{it["sub"]}</small><p>{it["text"]}</p>{link}</div></{tag}>'
+        groups+=f'<div class="intg-group"><h2 class="intg-group__h" data-reveal>{g["group"]}</h2><div class="intg-grid">{items}</div></div>'
+    body=f"""
+<section class="phero phero--center">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Хлебные крошки"><a href="/">Главная</a><span>/</span><b>Интеграции</b></nav>
+    <p class="eyebrow">Интеграции</p>
+    <h1>Всё, чем пользуется прокат в Казахстане, уже внутри Yume</h1>
+    <p class="lead">Kaspi, eGov, реестр должников, WhatsApp, SMS, телефония и Excel. Подключаются в разделе «Маркет» за несколько минут без программистов.</p>
+  </div>
+</section>
+<section class="section section--soft" style="padding-top:0"><div class="wrap">{groups}</div></section>
+<section class="section"><div class="wrap">
+  <div class="sec-head"><div data-reveal><p class="eyebrow">Как подключить</p><h2>Три шага в разделе «Маркет»</h2></div><p class="lead" data-reveal style="--d:.1s">Интеграции включаются внутри системы, а не через поддержку.</p></div>
+  <div class="flow">
+    <div class="flow__line"><i></i></div>
+    <div class="step" data-reveal><div class="step__n"><svg><use href="#i-store"/></svg></div><small>ШАГ 01</small><h3>Откройте Маркет</h3><p>Каталог модулей и интеграций внутри Yume с поиском и категориями.</p></div>
+    <div class="step" data-reveal style="--d:.1s"><div class="step__n"><svg><use href="#i-check"/></svg></div><small>ШАГ 02</small><h3>Подключите нужное</h3><p>Kaspi, Wazzup или телефония: вводите ключи из кабинета сервиса, остальное система делает сама.</p></div>
+    <div class="step" data-reveal style="--d:.2s"><div class="step__n"><svg><use href="#i-spark"/></svg></div><small>ШАГ 03</small><h3>Работайте в одном окне</h3><p>Оплаты, сообщения и звонки появляются в карточках аренд и клиентов.</p></div>
+  </div>
+</div></section>
+""" + cta_block('Нужна интеграция, которой нет в списке?', 'Расскажите, с чем работаете, и мы покажем, как подключить это к Yume или что можно заменить встроенным модулем.',
+                 ['Kaspi и eGov работают с первого дня', 'Персональный менеджер: поможем с настройкой', 'Безопасность данных: хранение в Казахстане'])
+    write('/integrations/index.html', page('Интеграции — Yume', 'Kaspi Платежи, eGov mobile и ЭЦП, реестр должников, WhatsApp через Wazzup, СМС Центр, телефония Ringostat и Binotel, Excel. Все интеграции платформы Yume.', '/integrations/', body))
+
+def cases_page():
+    cards=''
+    for k,c in enumerate(CASES):
+        mods=''.join(f'<span class="chip chip--s">{m}</span>' for m in c['mods'])
+        cards+=f"""<article class="kase{' kase--rev' if k%2 else ''}" data-reveal id="{c['co'].lower().replace(' ','-').replace('.','-')}">
+  <div class="kase__side">
+    <div class="case__co"><img src="{c['logo']}" alt="" loading="lazy"><div><b>{c['co']}</b><small>{c['seg']} · {c['city']}</small></div></div>
+    <div class="case__m"><b>{c['metric']}</b><span>{c['metric_l']}</span></div>
+    <div class="kase__mods">{mods}</div>
+  </div>
+  <div class="kase__body">
+    <div class="kase__ba"><div><small>До Yume</small><p>{c['before']}</p></div><div><small>После</small><p>{c['after']}</p></div></div>
+    <blockquote class="kase__q"><div class="stars"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></div><q>{c['q']}</q><footer>{c['who']}, {c['co']}</footer></blockquote>
+  </div>
+</article>"""
+    body=f"""
+<section class="phero phero--center">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Хлебные крошки"><a href="/">Главная</a><span>/</span><b>Кейсы</b></nav>
+    <p class="eyebrow">Кейсы клиентов</p>
+    <h1>Как прокаты Казахстана работают на Yume</h1>
+    <p class="lead">Шесть компаний, их задачи до перехода и что изменилось после. Цитаты владельцев без правок.</p>
+  </div>
+</section>
+<section class="section section--soft" style="padding-top:0"><div class="wrap kases">{cards}</div></section>
+""" + cta_block('Хотите такой же результат? Покажем на вашем примере', 'Расскажите, что сдаёте в аренду, и за 20 минут по видеосвязи мы покажем, как платформа решает ваши задачи.',
+                 ['Мгновенное подключение: быстрый старт без лишних сложностей', 'Персональный менеджер: поддержка на всех этапах', 'Безопасность данных: хранение в Казахстане'])
+    write('/cases/index.html', page('Кейсы клиентов — Yume', 'ProRent, StroyПрокат, Prokat Invest, ToRent, Tobe.kz, PostRental: как прокаты перешли на Yume и что изменилось.', '/cases/', body))
+
+integrations_page()
+cases_page()
 
 inject_index()
 for i, s in enumerate(SEGMENTS):

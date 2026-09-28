@@ -693,3 +693,33 @@ a.ccard:hover .ccard__arr{transform:translate(3px,-3px);color:var(--accent)}
 .rev-cap{margin-top:72px;margin-bottom:28px}
 .rev-cap h3{font-size:26px;margin-top:6px}
 @media (max-width:640px){.rev-cap{margin-top:48px}}
+
+/* ---------- integrations ---------- */
+.intg-group+.intg-group{margin-top:48px}
+.intg-group__h{font-size:22px;margin-bottom:18px}
+.intg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.intg{display:flex;gap:16px;align-items:flex-start;padding:24px;border-radius:var(--r-lg);background:#fff;border:1px solid var(--line);color:var(--ink);transition:transform .3s var(--ease),box-shadow .3s}
+a.intg:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.intg__i{width:48px;height:48px;border-radius:12px;background:var(--bg-soft);border:1px solid var(--line);display:grid;place-items:center;flex:none;overflow:hidden;font-style:normal}
+.intg__i img{width:48px;height:48px;object-fit:cover}
+.intg__i svg{width:24px;height:24px;color:var(--accent)}
+.intg h3{font-size:17px}
+.intg small{display:block;color:var(--accent);font-size:12px;font-weight:600;margin:2px 0 8px}
+.intg p{color:var(--muted);font-size:14px;line-height:1.55}
+.intg .link{margin-top:10px;display:inline-flex}
+/* ---------- cases page ---------- */
+.kases{display:grid;gap:20px}
+.kase{display:grid;grid-template-columns:300px 1fr;gap:32px;padding:32px;border-radius:var(--r-lg);background:#fff;border:1px solid var(--line)}
+.kase__side{display:flex;flex-direction:column;gap:20px}
+.kase__mods{display:flex;flex-wrap:wrap;gap:6px}
+.chip--s{font-size:12px;padding:6px 10px}
+.kase__ba{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.kase__ba small{display:block;font-family:var(--head);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;color:var(--faint)}
+.kase__ba div+div small{color:var(--accent)}
+.kase__ba p{font-size:15px;color:var(--muted);line-height:1.55}
+.kase__ba div+div p{color:var(--ink)}
+.kase__q{margin:24px 0 0;padding:20px 24px;border-radius:14px;background:var(--bg-soft)}
+.kase__q q{display:block;font-size:15px;line-height:1.55;margin:8px 0 10px;quotes:"«" "»"}
+.kase__q footer{font-size:13px;color:var(--muted);font-weight:600}
+@media (max-width:980px){.intg-grid{grid-template-columns:1fr 1fr}.kase{grid-template-columns:1fr;gap:24px}.kase__ba{grid-template-columns:1fr}}
+@media (max-width:640px){.intg-grid{grid-template-columns:1fr}}
