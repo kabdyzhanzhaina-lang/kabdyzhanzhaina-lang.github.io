@@ -12,7 +12,7 @@ def part(pattern):
     return m.group(0)
 
 SPRITE = part(r'<svg width="0" height="0".*?</svg>')
-HEADER = part(r'<header class="nav">.*?</header>')
+HEADER = re.sub(r'<a class="nav__lang"[^>]*>KZ</a>', '', part(r'<header class="nav">.*?</header>'))
 FOOTER = part(r'<footer class="footer">.*?</footer>')
 FORM = part(r'<form class="form".*?</form>')
 FABS = part(r'<a class="wa-fab".*?</button>')
@@ -33,8 +33,40 @@ def cta_block(title, lead, bullets):
   </div>
 </section>'''
 
-def page(title, desc, path, body, light_nav=True):
+def crumbs_ld(path, title):
+    import json
+    items = [{'@type': 'ListItem', 'position': 1, 'name': 'Главная', 'item': 'https://www.yume.cloud/'}]
+    parts = [x for x in path.strip('/').split('/') if x]
+    names = {'solutions': 'Решения', 'features': 'Возможности', 'legal': 'Документы'}
+    acc = ''
+    for i, prt in enumerate(parts):
+        acc += '/' + prt
+        items.append({'@type': 'ListItem', 'position': i + 2, 'name': names.get(prt, title.split(' — ')[0]) if i < len(parts) - 1 else title.split(' — ')[0], 'item': 'https://www.yume.cloud' + acc + '/'})
+    return {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': items}
+
+def faq_ld(body):
+    import json
+    qs = re.findall(r'<div class="q(?: is-open)?"><button>(.*?)<i></i></button><div class="q__a"><div><p>(.*?)</p>', body, re.S)
+    if not qs: return None
+    strip = lambda x: re.sub(r'<[^>]+>', '', x).strip()
+    return {'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': [{'@type': 'Question', 'name': strip(q), 'acceptedAnswer': {'@type': 'Answer', 'text': strip(a)}} for q, a in qs]}
+
+ORG_LD = {'@context': 'https://schema.org', '@type': 'Organization', 'name': 'Yume', 'legalName': 'ТОО «Yume.Cloud»', 'url': 'https://www.yume.cloud/', 'logo': 'https://www.yume.cloud/assets/img/apple-touch-icon.png', 'telephone': '+77779479990', 'email': 'sales@yume.cloud', 'address': {'@type': 'PostalAddress', 'addressLocality': 'Алматы', 'addressCountry': 'KZ'}, 'sameAs': ['https://www.instagram.com/yumecloudx/', 'https://www.linkedin.com/company/yume-cloud/']}
+
+def ld_scripts(path, title, body):
+    import json
+    blocks = [ORG_LD, crumbs_ld(path, title)]
+    f = faq_ld(body)
+    if f: blocks.append(f)
+    return ''.join('<script type="application/ld+json">' + json.dumps(b, ensure_ascii=False) + '</script>\n' for b in blocks)
+
+def page(title, desc, path, body, light_nav=True, segment=None):
     nav = HEADER.replace('<header class="nav">', '<header class="nav is-light">') if light_nav else HEADER
+    if path in ('/', '/contacts/'):
+        nav = nav.replace('<a class="nav__login"', f'<a class="nav__lang" href="/kk{path}" hreflang="kk" lang="kk">KZ</a><a class="nav__login"', 1)
+    if segment:
+        body = body.replace('<select id="seg" name="segment">', f'<select id="seg" name="segment"><option selected>{segment}</option>', 1)
+    body = body.replace('<form class="form"', f'<form class="form" data-page="{html.escape(title.split(" — ")[0])}"')
     return f'''<!doctype html>
 <html lang="ru">
 <head>
@@ -43,6 +75,7 @@ def page(title, desc, path, body, light_nav=True):
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
 <link rel="canonical" href="https://www.yume.cloud{path}">
+{('<link rel="alternate" hreflang="ru" href="https://www.yume.cloud' + path + '"><link rel="alternate" hreflang="kk" href="https://www.yume.cloud/kk' + path + '"><link rel="alternate" hreflang="x-default" href="https://www.yume.cloud' + path + '">') if path in ('/', '/contacts/') else ''}
 <meta property="og:type" content="website">
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(desc)}">
@@ -56,7 +89,7 @@ def page(title, desc, path, body, light_nav=True):
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/manrope-800-latin.woff2" crossorigin>
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
 <link rel="stylesheet" href="/css/styles.css">
-</head>
+{ld_scripts(path, title, body)}</head>
 <body>
 {SPRITE}
 {nav}
@@ -284,7 +317,7 @@ def solution_page(s, i):
 </section>
 ''' + cta_block('Запишитесь на демо-звонок, мы поможем начать. Бесплатно', 'Наш специалист покажет, как платформа решает задачи вашего проката. 20 минут по видеосвязи.',
                  ['Мгновенное подключение: быстрый старт без лишних сложностей', 'Персональный менеджер: поддержка на всех этапах', 'Безопасность данных: хранение в Казахстане'])
-    write(f'/solutions/{s["slug"]}/index.html', page(f'{s["name"]} — Yume', s['lead'], f'/solutions/{s["slug"]}/', body))
+    write(f'/solutions/{s["slug"]}/index.html', page(f'{s["name"]} — Yume', s['lead'], f'/solutions/{s["slug"]}/', body, segment=s['name']))
 
 def solutions_index():
     cards = ''
@@ -355,7 +388,7 @@ def contacts():
 '''
     write('/contacts/index.html', page('Контакты — Yume', 'Свяжитесь с Yume: WhatsApp +7 777 947 99 90, sales@yume.cloud. Отвечаем за 15 минут в рабочее время.', '/contacts/', body))
 
-ANALYTICS = re.search(r'<script async src="https://www.googletagmanager.com.*?</script>\n<script>.*?</script>\n<script>.*?</script>', idx, re.S)
+ANALYTICS = re.search(r'<!-- analytics -->.*?<!-- /analytics -->', idx, re.S)
 ANALYTICS = ANALYTICS.group(0) if ANALYTICS else ''
 
 def check_page():
@@ -480,7 +513,7 @@ def doc_page(path, title, desc, inner, updated='22 сентября 2026'):
 <section class="phero"><div class="wrap">
   <nav class="crumbs" aria-label="Хлебные крошки"><a href="/">Главная</a><span>/</span><a href="/legal/">Документы</a><span>/</span><b>{title}</b></nav>
   <p class="eyebrow">Документы</p><h1 style="font-size:clamp(30px,3.6vw,44px)">{title}</h1>
-  <p class="lead">Редакция от {updated}. ТОО «Yume.Cloud», Республика Казахстан.</p>
+  <p class="lead">{('Редакция от ' + updated + '. ') if updated else 'Действующая редакция. '}ТОО «Yume.Cloud», Республика Казахстан.</p>
 </div></section>
 <section class="section" style="padding-top:0"><div class="wrap doc">{inner}</div></section>'''
     write(path, page(f'{title} — Yume', desc, path.replace('index.html', ''), body))
@@ -510,12 +543,15 @@ def legal_pages():
 <h2>Контакты</h2>
 <p>ТОО «Yume.Cloud» · <a href="mailto:support.cloud@yume.kz">support.cloud@yume.kz</a> · <a href="tel:+77779479990">+7 777 947 99 90</a></p>'''
     doc_page('/delete-account/index.html', 'Удаление аккаунта', 'Как пользователь приложения Yume Cloud может запросить удаление аккаунта и связанных данных.', da)
-    docs = [('Политика конфиденциальности', '/legal/privacy/', 'Какие данные собираем, зачем и как защищаем.', False),
-            ('Публичная оферта', 'https://drive.google.com/file/d/1HC2aDhfN5nDlu2q_M73Km5yFUF7t05C7/view', 'Условия предоставления сервиса Yume.', True),
-            ('Пользовательское соглашение', 'https://drive.google.com/file/d/1ELSMnaksX3ROz7dSYNvOraV9-jUWjV78/view', 'Правила использования платформы и приложений.', True),
-            ('Соглашение о рекуррентных платежах', 'https://drive.google.com/file/d/13ipJMcnRsii1qyfn9vxxOvuGCjWjxFDX/view', 'Как работает автопродление подписки.', True),
-            ('Правила отмены и возврата платежей', 'https://drive.google.com/file/d/1Ui87iIFScByKXF-4_j_0rTv3RfT9kr-E/view', 'Когда и как вернуть оплату.', True),
-            ('Описание процедуры оплаты', 'https://drive.google.com/file/d/1WLziN6TzG7g-xHzFDxROyK8uxSaAM_3h/view', 'Способы оплаты и порядок выставления счетов.', True),
+    LEGAL = [('oferta', 'Публичная оферта', 'Условия предоставления сервиса Yume.', 'Публичная оферта ТОО «Yume.Cloud» на оказание электронных услуг: доступ к сервису yume.cloud, порядок оплаты, права и обязанности сторон.'),
+             ('terms', 'Пользовательское соглашение', 'Правила использования платформы и приложений.', 'Пользовательское соглашение сервиса Yume.cloud: определения, права и обязанности пользователя, интеллектуальная собственность, ответственность.'),
+             ('recurring', 'Соглашение о рекуррентных платежах', 'Как работает автопродление подписки.', 'Соглашение о рекуррентных платежах Yume.cloud: автоматическое списание за подписку, тарифы, порядок отключения.'),
+             ('refund', 'Правила отмены и возврата платежей', 'Когда и как вернуть оплату.', 'Правила отмены и возврата платежей Yume.cloud: сроки, порядок подачи заявления, случаи возврата.'),
+             ('payment', 'Описание процедуры оплаты', 'Способы оплаты и порядок выставления счетов.', 'Как оплатить подписку Yume.cloud банковской картой: безопасность платежа, 3D Secure, отказы, возврат средств.')]
+    for slug, t, short, d in LEGAL:
+        inner = open(os.path.join(ROOT, 'legal-src', slug + '.html'), encoding='utf-8').read()
+        doc_page(f'/legal/{slug}/index.html', t, d, inner, updated=None)
+    docs = [('Политика конфиденциальности', '/legal/privacy/', 'Какие данные собираем, зачем и как защищаем.', False)] + [(t, f'/legal/{slug}/', short, False) for slug, t, short, d in LEGAL] + [
             ('Удаление аккаунта', '/delete-account/', 'Как запросить удаление аккаунта и данных.', False)]
     items = ''.join(f'<a class="quick__i" href="{u}"{" rel=noopener" if ext else ""}><h3>{t}</h3><p>{d}</p><span class="link">{"Открыть PDF" if ext else "Читать"} <svg><use href="#i-arrow"/></svg></span></a>' for t, u, d, ext in docs)
     body = f'''
@@ -529,8 +565,8 @@ def legal_pages():
 
 # inject analytics into generated pages
 _page = page
-def page(title, desc, path, body, light_nav=True):
-    return _page(title, desc, path, body, light_nav).replace('</head>', ANALYTICS + '\n</head>', 1) if ANALYTICS else _page(title, desc, path, body, light_nav)
+def page(title, desc, path, body, light_nav=True, segment=None):
+    return _page(title, desc, path, body, light_nav, segment).replace('</head>', ANALYTICS + '\n</head>', 1) if ANALYTICS else _page(title, desc, path, body, light_nav, segment)
 
 
 def redirect_pages():
@@ -541,7 +577,7 @@ def redirect_pages():
     write('/.nojekyll', '')
 
 def service_files():
-    pages = ['/', '/solutions/', '/features/', '/integrations/', '/cases/', '/check/', '/contacts/', '/download/', '/legal/', '/legal/privacy/', '/delete-account/'] + [f'/solutions/{s["slug"]}/' for s in SEGMENTS] + [f'/features/{f["slug"]}/' for f in FEATURES]
+    pages = ['/', '/kk/', '/kk/contacts/', '/solutions/', '/features/', '/integrations/', '/cases/', '/check/', '/contacts/', '/download/', '/legal/', '/legal/privacy/', '/legal/oferta/', '/legal/terms/', '/legal/recurring/', '/legal/refund/', '/legal/payment/', '/delete-account/'] + [f'/solutions/{s["slug"]}/' for s in SEGMENTS] + [f'/features/{f["slug"]}/' for f in FEATURES]
     today = __import__('datetime').date.today().isoformat()
     urls = ''.join(f'  <url><loc>https://www.yume.cloud{p}</loc><lastmod>{today}</lastmod><changefreq>{"weekly" if p in ("/", "/solutions/") else "monthly"}</changefreq><priority>{"1.0" if p == "/" else "0.8" if p.startswith("/solutions") or p.startswith("/features") or p == "/check/" else "0.5"}</priority></url>\n' for p in pages)
     write('/sitemap.xml', f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
@@ -603,13 +639,9 @@ def feature_page(f):
 </section>
 
 <section class="section">
-  <div class="wrap start">
-    <div data-reveal="left">
-      <p class="eyebrow">Как это работает</p>
-      <h2>Три шага, и модуль работает на вас</h2>
-      <ul class="start__steps" style="margin-top:24px">{steps}</ul>
-    </div>
-    <div class="start__visual start__visual--shot" data-reveal="scale"><img src="{f['img']}" alt="" loading="lazy"></div>
+  <div class="wrap">
+    <div class="sec-head sec-head--center" data-reveal><div><p class="eyebrow">Как это работает</p><h2>Три шага, и модуль работает на вас</h2></div></div>
+    <ul class="start__steps start__steps--row" data-stagger>{steps}</ul>
   </div>
 </section>
 
@@ -665,10 +697,14 @@ def inject_index():
     new = re.sub(r'<!-- dd:solutions -->.*?<!-- /dd -->', '<!-- dd:solutions -->' + dd_sol + '<!-- /dd -->', new, flags=re.S)
     new = re.sub(r'<!-- dd:features -->.*?<!-- /dd -->', '<!-- dd:features -->' + dd_feat + '<!-- /dd -->', new, flags=re.S)
     new = re.sub(r'(<!-- segs -->).*?(<!-- /segs -->)', lambda m: m.group(1) + '\n      ' + segs + m.group(2), new, flags=re.S)
+    if '<!-- ld:faq -->' not in new:
+        import json
+        f = faq_ld(new)
+        if f: new = new.replace('</head>', '<!-- ld:faq --><script type="application/ld+json">' + json.dumps(f, ensure_ascii=False) + '</script><script type="application/ld+json">' + json.dumps(ORG_LD, ensure_ascii=False) + '</script>\n</head>', 1)
     if new != idx:
         idx = new
         write('/index.html', idx)
-        HEADER = part(r'<header class="nav">.*?</header>')
+        HEADER = re.sub(r'<a class="nav__lang"[^>]*>KZ</a>', '', part(r'<header class="nav">.*?</header>'))
 
 # ------------------------------------------------------------------ интеграции и кейсы
 def integrations_page():
@@ -750,3 +786,38 @@ download_page()
 legal_pages()
 service_files()
 redirect_pages()
+
+# ------------------------------------------------------------------ казахская версия
+def kk_pages():
+    import json
+    KK = json.load(open(os.path.join(ROOT, 'kk.json'), encoding='utf-8'))
+    def tr(src, path):
+        out = src
+        # текстовые узлы
+        def node(m):
+            t = html.unescape(m.group(1)); st = t.strip()
+            if st in KK: return '>' + m.group(1).replace(st, KK[st]) + '<'
+            return m.group(0)
+        out = re.sub(r'>([^<>]+)<', node, out)
+        def attr(m):
+            v = m.group(2)
+            return f'{m.group(1)}="{KK.get(v, v)}"'
+        out = re.sub(r'(placeholder|aria-label|alt|title|content)="([^"]*)"', attr, out)
+        out = out.replace('<html lang="ru">', '<html lang="kk">')
+        out = re.sub(r'\n?<link rel="alternate" hreflang="[^"]+" href="[^"]+">', '', out)
+        out = re.sub(r'<a class="nav__lang"[^>]*>KZ</a>', '', out)
+        out = re.sub(r'<title>(.*?)</title>', lambda m: '<title>' + KK.get(html.unescape(m.group(1)), m.group(1)) + '</title>', out)
+        ru = 'https://www.yume.cloud' + path.replace('/kk', '', 1)
+        out = out.replace(f'<link rel="canonical" href="{ru}">', f'<link rel="canonical" href="https://www.yume.cloud{path}">\n<link rel="alternate" hreflang="ru" href="{ru}">\n<link rel="alternate" hreflang="kk" href="https://www.yume.cloud{path}">\n<link rel="alternate" hreflang="x-default" href="{ru}">')
+        out = out.replace(f'<meta property="og:url" content="{ru}">', f'<meta property="og:url" content="https://www.yume.cloud{path}">')
+        # ссылки: главная и контакты внутри kk, остальное на русские страницы
+        out = out.replace('href="/contacts/"', 'href="/kk/contacts/"').replace('class="nav__logo" href="/"', 'class="nav__logo" href="/kk/"')
+        out = out.replace('<a class="nav__login"', f'<a class="nav__lang" href="{path.replace("/kk", "", 1)}" hreflang="ru" lang="ru">RU</a><a class="nav__login"', 1)
+        return out
+    home = tr(idx, '/kk/')
+    home = home.replace('<meta name="description" content="', '<meta name="description" content="Yume — Қазақстандағы мүкәммал прокатын басқаруға арналған ЖИ-платформа: жалдау есебі, eGov арқылы қол қою, Kaspi Pay, клиенттерді ЖСН бойынша тексеру. ', 1)
+    write('/kk/index.html', home)
+    c = open(os.path.join(ROOT, 'contacts', 'index.html'), encoding='utf-8').read()
+    write('/kk/contacts/index.html', tr(c, '/kk/contacts/'))
+
+kk_pages()

@@ -738,3 +738,10 @@ a.intg:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 @supports not (grid-template-rows:subgrid){.swap__was{min-height:150px}}
 @media (max-width:980px){.flow--3{grid-template-columns:repeat(2,1fr)}.swap{grid-template-rows:none}.swap__i{display:flex;grid-row:auto}}
 .intg__i img{border-radius:10px}
+.start__steps--row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:0;counter-reset:st}
+.start__steps--row li{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:26px 26px 26px 26px;display:block}
+.start__steps--row li::before{position:static;display:inline-grid;margin-bottom:14px}
+@media (max-width:860px){.start__steps--row{grid-template-columns:1fr}}
+.nav__lang{padding:8px 10px;font-weight:700;font-size:12px;letter-spacing:.08em;color:var(--nav-fg);opacity:.7;border:1px solid currentColor;border-radius:8px;line-height:1}
+.nav__lang:hover{opacity:1}
+@media (max-width:980px){.nav__lang{display:inline-flex}}
