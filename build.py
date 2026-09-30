@@ -1,10 +1,18 @@
 # -*- coding: utf-8 -*-
 """Generates inner pages (solutions, contacts) from index.html partials."""
-import re, os, html
+import re, os, html, hashlib
 from content import CARDS, EXTRA_SEGMENTS, FEATURES, FEATURE_LINKS, INTEGRATIONS, CASES
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 idx = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
+
+def ver(rel):
+    """Версия файла по содержимому: после правки стилей браузер обязан скачать их заново."""
+    try:
+        return hashlib.md5(open(os.path.join(ROOT, *rel.split('/')), 'rb').read()).hexdigest()[:8]
+    except OSError:
+        return '1'
+CSS_V, JS_V, FONTS_V = ver('css/styles.css'), ver('js/main.js'), ver('assets/fonts/fonts.css')
 
 def part(pattern):
     m = re.search(pattern, idx, re.S)
@@ -87,8 +95,8 @@ def page(title, desc, path, body, light_nav=True, segment=None):
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/golos-text-400-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/manrope-800-cyrillic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/manrope-800-latin.woff2" crossorigin>
-<link rel="stylesheet" href="/assets/fonts/fonts.css">
-<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/assets/fonts/fonts.css?v={FONTS_V}">
+<link rel="stylesheet" href="/css/styles.css?v={CSS_V}">
 {ld_scripts(path, title, body)}</head>
 <body>
 {SPRITE}
@@ -96,7 +104,7 @@ def page(title, desc, path, body, light_nav=True, segment=None):
 {body}
 {FOOTER}
 {FABS}
-<script src="/js/main.js?v=3" defer></script>
+<script src="/js/main.js?v={JS_V}" defer></script>
 </body>
 </html>
 '''
@@ -692,6 +700,12 @@ def features_index():
     write('/features/index.html', page('Возможности платформы — Yume', 'Все модули Yume: управление арендой, каталог, подписание через eGov и SMS, финансы, клиенты, аналитика, мастерская, доставка, ИИ-ассистент.', '/features/', body))
 
 # ------------------------------------------------------------------ главная: меню и сетка сегментов
+def stamp_assets(h):
+    h = re.sub(r'(href="/css/styles\.css)(\?v=[^"]*)?"', r'\1?v=%s"' % CSS_V, h)
+    h = re.sub(r'(href="/assets/fonts/fonts\.css)(\?v=[^"]*)?"', r'\1?v=%s"' % FONTS_V, h)
+    h = re.sub(r'(src="/js/main\.js)(\?v=[^"]*)?"', r'\1?v=%s"' % JS_V, h)
+    return h
+
 def inject_index():
     global idx, HEADER
     dd_sol = ''.join(f'<a class="dd__i" href="/solutions/{s["slug"]}/"><svg><use href="#{s["icon"]}"/></svg><div><b>{s["short"]}</b><small>{s["name"]}</small></div></a>' for s in SEGMENTS)
@@ -708,6 +722,7 @@ def inject_index():
         import json
         f = faq_ld(new)
         if f: new = new.replace('</head>', '<!-- ld:faq --><script type="application/ld+json">' + json.dumps(f, ensure_ascii=False) + '</script><script type="application/ld+json">' + json.dumps(ORG_LD, ensure_ascii=False) + '</script>\n</head>', 1)
+    new = stamp_assets(new)
     if new != idx:
         idx = new
         write('/index.html', idx)
