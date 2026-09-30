@@ -70,6 +70,9 @@ def ld_scripts(path, title, body):
 
 def page(title, desc, path, body, light_nav=True, segment=None):
     nav = HEADER.replace('<header class="nav">', '<header class="nav is-light">') if light_nav else HEADER
+    if 'id="demo"' not in body:
+        # своей формы на странице нет — ведём на форму главной
+        nav = nav.replace('href="#demo"', 'href="/#demo"')
     if path in ('/', '/contacts/'):
         nav = nav.replace('<a class="nav__login"', f'<a class="nav__lang" href="/kk{path}" hreflang="kk" lang="kk">KZ</a><a class="nav__login"', 1)
     if segment:
@@ -279,7 +282,7 @@ def solution_page(s, i):
       <h1>{s['h1']}</h1>
       <p class="lead">{s['lead']}</p>
       <div class="hero__ctas" style="justify-content:flex-start;opacity:1;animation:none">
-        <a class="btn btn--lg" href="https://account.yume.cloud/auth/register">Попробовать бесплатно <svg><use href="#i-arrow"/></svg></a>
+        <a class="btn btn--lg" href="#demo">Попробовать бесплатно <svg><use href="#i-arrow"/></svg></a>
         <a class="btn btn--lg btn--ghost" href="#demo">Записаться на демо</a>
       </div>
       <div class="hero__trust" style="justify-content:flex-start;opacity:1;animation:none;color:var(--muted)">
@@ -381,7 +384,7 @@ def contacts():
       <div class="ccard ccard--static"><i><svg><use href="#i-store"/></svg></i><div><small>Офис</small><b>Алматы, Казахстан</b><span>Встречи по договорённости. Приезжаем к клиентам в Алматы и Астане, остальным показываем по видеосвязи.</span></div></div>
       <div class="ccard ccard--static"><i><svg><use href="#i-box"/></svg></i><div><small>Мы в сети</small><b><a href="https://www.instagram.com/yumecloudx/" rel="noopener">Instagram</a> · <a href="https://www.linkedin.com/company/yume-cloud/" rel="noopener">LinkedIn</a></b><span>Новости продукта, кейсы клиентов и советы по прокату</span></div></div>
     </div>
-    <div class="contacts__form" data-reveal="right">
+    <div class="contacts__form" data-reveal="right" id="demo">
       <h2 style="font-size:26px;margin-bottom:8px">Оставьте заявку</h2>
       <p class="lead" style="font-size:15px;margin-bottom:22px">Оставьте заявку на живую демонстрацию платформы. Перезвоним в течение 15 минут в рабочее время.</p>
       ''' + FORM.replace('data-reveal="right"', '') + '''
@@ -631,7 +634,7 @@ def feature_page(f):
       <h1>{f['h1']}</h1>
       <p class="lead">{f['lead']}</p>
       <div class="hero__ctas" style="justify-content:flex-start;opacity:1;animation:none">
-        <a class="btn btn--lg" href="https://account.yume.cloud/auth/register">Попробовать бесплатно <svg><use href="#i-arrow"/></svg></a>
+        <a class="btn btn--lg" href="#demo">Попробовать бесплатно <svg><use href="#i-arrow"/></svg></a>
         <a class="btn btn--lg btn--ghost" href="#demo">Записаться на демо</a>
       </div>
       <div class="hero__trust" style="justify-content:flex-start;opacity:1;animation:none;color:var(--muted)">
