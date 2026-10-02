@@ -68,7 +68,7 @@ def ld_scripts(path, title, body):
     if f: blocks.append(f)
     return ''.join('<script type="application/ld+json">' + json.dumps(b, ensure_ascii=False) + '</script>\n' for b in blocks)
 
-def page(title, desc, path, body, light_nav=True, segment=None):
+def page(title, desc, path, body, light_nav=True, segment=None, noindex=False):
     nav = HEADER.replace('<header class="nav">', '<header class="nav is-light">') if light_nav else HEADER
     if 'id="demo"' not in body:
         # своей формы на странице нет — ведём на форму главной
@@ -86,7 +86,7 @@ def page(title, desc, path, body, light_nav=True, segment=None):
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
 <link rel="canonical" href="https://www.yume.cloud{path}">
-{('<link rel="alternate" hreflang="ru" href="https://www.yume.cloud' + path + '"><link rel="alternate" hreflang="kk" href="https://www.yume.cloud/kk' + path + '"><link rel="alternate" hreflang="x-default" href="https://www.yume.cloud' + path + '">') if path in ('/', '/contacts/') else ''}
+{'<meta name="robots" content="noindex, follow">' + chr(10) if noindex else ''}{('<link rel="alternate" hreflang="ru" href="https://www.yume.cloud' + path + '"><link rel="alternate" hreflang="kk" href="https://www.yume.cloud/kk' + path + '"><link rel="alternate" hreflang="x-default" href="https://www.yume.cloud' + path + '">') if path in ('/', '/contacts/') else ''}
 <meta property="og:type" content="website">
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(desc)}">
@@ -582,8 +582,9 @@ def legal_pages():
 
 # inject analytics into generated pages
 _page = page
-def page(title, desc, path, body, light_nav=True, segment=None):
-    return _page(title, desc, path, body, light_nav, segment).replace('</head>', ANALYTICS + '\n</head>', 1) if ANALYTICS else _page(title, desc, path, body, light_nav, segment)
+def page(title, desc, path, body, light_nav=True, segment=None, noindex=False):
+    out = _page(title, desc, path, body, light_nav, segment, noindex)
+    return out.replace('</head>', ANALYTICS + '\n</head>', 1) if ANALYTICS else out
 
 
 def redirect_pages():
@@ -796,7 +797,33 @@ def cases_page():
     write('/cases/index.html', page('Кейсы клиентов — Yume', 'ProRent, StroyПрокат, Prokat Invest, ToRent, Tobe.kz, PostRental: как прокаты перешли на Yume и что изменилось.', '/cases/', body))
 
 integrations_page()
+def spasibo_page():
+    """Страница после отправки заявки. Не индексируется и не попадает в карту сайта."""
+    body = """
+<section class="phero phero--center" style="min-height:62vh;display:grid;align-items:center">
+  <div class="wrap" style="max-width:760px;text-align:center">
+    <p class="eyebrow">Заявка принята</p>
+    <h1>Спасибо, заявка у нас</h1>
+    <p class="lead">Перезвоним в течение 15 минут в рабочее время: будни 9:00–19:00, суббота 10:00–16:00 по Алматы.</p>
+    <div class="hero__ctas" style="justify-content:center;opacity:1;animation:none;margin-top:28px">
+      <a class="btn btn--lg" href="https://wa.me/77779479990" rel="noopener">Написать в WhatsApp <svg><use href="#i-arrow"/></svg></a>
+      <a class="btn btn--lg btn--ghost" href="/">На главную</a>
+    </div>
+  </div>
+</section>
+<section class="section section--soft"><div class="wrap" style="text-align:center">
+  <h2>Пока ждёте, посмотрите</h2>
+  <div class="chips" style="justify-content:center;margin-top:26px">
+    <a class="chip" href="/solutions/"><svg><use href="#i-arrow"/></svg>Решения для проката</a>
+    <a class="chip" href="/features/"><svg><use href="#i-arrow"/></svg>Возможности платформы</a>
+    <a class="chip" href="/check/"><svg><use href="#i-arrow"/></svg>Проверка клиента по ИИН</a>
+    <a class="chip" href="/download/"><svg><use href="#i-arrow"/></svg>Скачать приложение</a>
+  </div>
+</div></section>"""
+    write('/spasibo/index.html', page('Спасибо, заявка у нас — Yume', 'Заявка на демонстрацию Yume принята. Перезвоним в течение 15 минут в рабочее время.', '/spasibo/', body, noindex=True))
+
 cases_page()
+spasibo_page()
 
 inject_index()
 for i, s in enumerate(SEGMENTS):
@@ -836,7 +863,7 @@ def kk_pages():
         out = out.replace(f'<link rel="canonical" href="{ru}">', f'<link rel="canonical" href="https://www.yume.cloud{path}">\n<link rel="alternate" hreflang="ru" href="{ru}">\n<link rel="alternate" hreflang="kk" href="https://www.yume.cloud{path}">\n<link rel="alternate" hreflang="x-default" href="{ru}">')
         out = out.replace(f'<meta property="og:url" content="{ru}">', f'<meta property="og:url" content="https://www.yume.cloud{path}">')
         # ссылки: главная и контакты внутри kk, остальное на русские страницы
-        out = out.replace('href="/contacts/"', 'href="/kk/contacts/"').replace('class="nav__logo" href="/"', 'class="nav__logo" href="/kk/"')
+        out = out.replace('href="/contacts/"', 'href="/kk/contacts/"').replace('data-done="/spasibo/"', 'data-done="/kk/spasibo/"').replace('class="nav__logo" href="/"', 'class="nav__logo" href="/kk/"')
         out = out.replace('<a class="nav__login"', f'<a class="nav__lang" href="{path.replace("/kk", "", 1)}" hreflang="ru" lang="ru">RU</a><a class="nav__login"', 1)
         return out
     home = tr(idx, '/kk/')
@@ -844,5 +871,7 @@ def kk_pages():
     write('/kk/index.html', home)
     c = open(os.path.join(ROOT, 'contacts', 'index.html'), encoding='utf-8').read()
     write('/kk/contacts/index.html', tr(c, '/kk/contacts/'))
+    t = open(os.path.join(ROOT, 'spasibo', 'index.html'), encoding='utf-8').read()
+    write('/kk/spasibo/index.html', tr(t, '/kk/spasibo/'))
 
 kk_pages()

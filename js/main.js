@@ -189,6 +189,10 @@
       if (!r.ok || !j.ok) throw new Error(j.error || r.status);
       form.classList.add('is-done');
       try { window.gtag && gtag('event', 'generate_lead', { segment: payload.segment }); window.fbq && fbq('track', 'Lead'); } catch (x) {}
+      // заявка ушла на сервер — уводим на страницу «спасибо».
+      // при ошибке человек остаётся здесь: у него открыт WhatsApp с текстом заявки
+      const done = form.dataset.done;
+      if (done) setTimeout(() => location.assign(done), 250);
     } catch (err) {
       btn.disabled = false; btn.textContent = label;
       const msg = `Здравствуйте! Хочу демо Yume.\nИмя: ${payload.name}\nТелефон: ${payload.phone}\nСфера: ${payload.segment}`;
