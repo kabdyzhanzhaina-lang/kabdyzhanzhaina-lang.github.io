@@ -6,3 +6,4 @@ node_modules
 assets/raw/
 .env*
 api/config.js
+.vercel
