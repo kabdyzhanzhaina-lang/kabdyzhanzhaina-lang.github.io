@@ -22,12 +22,6 @@ export default async function handler(req, res) {
   // Основной приём — config.js или TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID.
   // Второй — FLEET_TELEGRAM_BOT_TOKEN / FLEET_TELEGRAM_CHAT_ID: владелец 12.10 попросил
   // слать заявку Yume Fleet и в старый чат, и в новый («Customer activity | Fleet»).
-  const routes = [
-    [cfg.TELEGRAM_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN, cfg.TELEGRAM_CHAT_ID || process.env.TELEGRAM_CHAT_ID],
-    [process.env.FLEET_TELEGRAM_BOT_TOKEN, process.env.FLEET_TELEGRAM_CHAT_ID],
-  ].filter(([token, chat]) => token && chat);
-  if (!routes.length) return res.status(503).json({ ok: false, error: 'not_configured' });
-
   let b = req.body;
   if (typeof b === 'string') { try { b = JSON.parse(b); } catch { b = {}; } }
   b = b || {};
@@ -41,6 +35,12 @@ export default async function handler(req, res) {
   const digits = phone.replace(/\D/g, '');
   const wa = digits ? `https://wa.me/${digits.replace(/^8/, '7')}` : '';
   const title = /fleet/i.test(source) || /fleet/i.test(origin) ? 'Yume Fleet' : 'yume.cloud';
+  // Заявки yume.cloud в чат Fleet не уходят: там другие люди, а в заявке телефон клиента.
+  const routes = [
+    [cfg.TELEGRAM_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN, cfg.TELEGRAM_CHAT_ID || process.env.TELEGRAM_CHAT_ID],
+    title === 'Yume Fleet' ? [process.env.FLEET_TELEGRAM_BOT_TOKEN, process.env.FLEET_TELEGRAM_CHAT_ID] : [],
+  ].filter(([token, chat]) => token && chat);
+  if (!routes.length) return res.status(503).json({ ok: false, error: 'not_configured' });
   const when = new Date().toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' });
   const text = [
     `<b>Новая заявка · ${title}</b>`,
